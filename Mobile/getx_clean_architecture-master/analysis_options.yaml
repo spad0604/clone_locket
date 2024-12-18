@@ -1,0 +1,124 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.reflectable.dart"
+    - lib/l10n/generated/**
+
+dart_code_metrics:
+  anti-patterns:
+  #    - long-method
+  #    - long-parameter-list
+  metrics:
+    # cyclomatic-complexity: 20
+    maximum-nesting-level: 8
+    #    number-of-parameters: 4
+    # source-lines-of-code: 50
+  metrics-exclude:
+    - lib/l10n/generated/**
+    - lib/utils/gen/**
+  rules-exclude:
+    - lib/l10n/generated/**
+    - lib/utils/gen/**
+  rules:
+    - member-ordering
+    - always-remove-listener
+    - no-boolean-literal-compare
+    - newline-before-return
+    # - no-empty-block
+    - no-magic-number:
+      allowed: [-1, 0, 1, 2, 3]
+    - no-equal-then-else
+    # - no-object-declaration
+    - prefer-conditional-expressions
+    # - prefer-extracting-callbacks
+    - prefer-trailing-comma
+    # - avoid-dynamic
+    #    - avoid-unused-parameters
+    - double-literal-format
+    - prefer-first
+    - prefer-last
+    - prefer-correct-edge-insets-constructor
+    - avoid-unnecessary-setstate
+    - prefer-single-widget-per-file:
+        ignore-private-widgets: true
+    # - prefer-const-border-radius
+    - avoid-wrapping-in-padding
+    - avoid-shrink-wrap-in-lists
+    - avoid-returning-widgets
+    - avoid-expanded-as-spacer
+    - avoid-nested-conditional-expressions:
+        acceptable-level: 8
+        ignored-annotations:
+          - allowedAnnotation
+
+linter:
+  rules:
+    avoid_print: true
+    avoid_relative_lib_imports: true
+    avoid_returning_null_for_future: true
+    avoid_slow_async_io: true
+    avoid_web_libraries_in_flutter: true
+    annotate_overrides: true
+    avoid_empty_else: true
+    avoid_null_checks_in_equality_operators: true
+    avoid_return_types_on_setters: true
+    avoid_types_as_parameter_names: true
+    avoid_unused_constructor_parameters: true
+    camel_case_types: true
+    cancel_subscriptions: true
+    constant_identifier_names: true
+    control_flow_in_finally: true
+    empty_catches: true
+    empty_constructor_bodies: true
+    empty_statements: true
+    hash_and_equals: true
+    implementation_imports: true
+    iterable_contains_unrelated_type: true
+    list_remove_unrelated_type: true
+    no_adjacent_strings_in_list: true
+    no_duplicate_case_values: true
+    non_constant_identifier_names: true
+    null_closures: true
+    overridden_fields: true
+    package_names: true
+    prefer_conditional_assignment: true
+    prefer_const_constructors: true
+    prefer_contains: true
+    prefer_equal_for_default_values: true
+    prefer_final_fields: true
+    prefer_initializing_formals: true
+    prefer_interpolation_to_compose_strings: true
+    prefer_is_empty: true
+    prefer_is_not_empty: true
+    prefer_typing_uninitialized_variables: true
+    prefer_void_to_null: true
+    prefer_final_locals: true
+    recursive_getters: true
+    test_types_in_equals: true
+    throw_in_finally: true
+    type_init_formals: true
+    unnecessary_brace_in_string_interps: true
+    unnecessary_const: true
+    unnecessary_getters_setters: true
+    unnecessary_lambdas: true
+    unnecessary_new: true
+    unnecessary_null_aware_assignments: true
+    unnecessary_statements: true
+    unnecessary_this: true
+    unrelated_type_equality_checks: true
+    valid_regexps: true
+    close_sinks: true
+    prefer_single_quotes: true
+    avoid_escaping_inner_quotes: true
+    null_check_on_nullable_type_parameter: true
+    prefer_if_null_operators: true
+    comment_references: true
+    diagnostic_describe_all_properties: false
+    literal_only_boolean_expressions: true
+    no_logic_in_create_state: true
+    unawaited_futures: false
+    avoid_function_literals_in_foreach_calls: false
+    avoid_renaming_method_parameters: false
+    use_key_in_widget_constructors: false
