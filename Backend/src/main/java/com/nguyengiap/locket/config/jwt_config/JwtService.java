@@ -1,16 +1,13 @@
-package com.nguyengiap.security.config.jwt_config;
+package com.nguyengiap.locket.config.jwt_config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import com.nguyengiap.security.service.user_session_service.UserSessionService;
 
 import java.security.Key;
 import java.util.Date;
@@ -23,9 +20,6 @@ public class JwtService {
 
     private final static String SECRET_KEY = "f9012467ad58e02df23ad4ac65f5f0c5794928fe38fe57f0a8198eb27cbfd761";
 
-    @Autowired
-    private UserSessionService userSessionService;
-
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -37,9 +31,6 @@ public class JwtService {
     
     public String generateTokenWithUserDetails(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        if (userDetails instanceof com.nguyengiap.security.database_model.user.User) {
-            claims.put("role", ((com.nguyengiap.security.database_model.user.User)userDetails).getRole().name());
-        }
         return generateToken(claims, userDetails);
     }
 

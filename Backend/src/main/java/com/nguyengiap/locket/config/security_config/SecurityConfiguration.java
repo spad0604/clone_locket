@@ -1,5 +1,6 @@
-package com.nguyengiap.security.config.security_config;
+package com.nguyengiap.locket.config.security_config;
 
+import com.nguyengiap.locket.config.jwt_config.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,8 +12,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.nguyengiap.security.config.jwt_config.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -29,7 +28,6 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/notifications/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
@@ -40,4 +38,5 @@ public class SecurityConfiguration {
 
         return http.build();
     }
+
 }
