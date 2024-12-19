@@ -32,7 +32,6 @@ public class LocketApplication {
 		.lastName("Giap")
 		.avatarUrl("test")
 		.build();
-
 		userRepository.save(user);
 	}
 

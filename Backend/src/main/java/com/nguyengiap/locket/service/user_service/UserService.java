@@ -16,4 +16,8 @@ public class UserService{
     public Optional<User> findByAccount(String account) {
         return userRepository.findByAccount(account);
     }
+
+    public void save(User user) {
+        userRepository.save(user);
+    }
 }

@@ -46,4 +46,18 @@ public class AuthenticateController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(StatusResponseModel.builder().statusCode(404).message("Account not found").build());
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody User user) {
+        Optional<User> userOptional = userService.findByAccount(user.getAccount());
+
+        if(userOptional.isPresent()) {
+            return ResponseEntity.status(403).body(StatusResponseModel.builder().statusCode(403).message("Account is exits").build());
+        }
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userService.save(user);
+        return ResponseEntity.ok(StatusResponseModel.builder().statusCode(200).message("Register success").build());
+    }
 }
+
