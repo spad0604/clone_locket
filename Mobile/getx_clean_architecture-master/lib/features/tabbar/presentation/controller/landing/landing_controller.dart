@@ -39,6 +39,7 @@ class LandingController extends BaseController {
   }
 
   void toRegister() {
-    N.toRegister();
+    N.toHomePage();
+    //N.toRegister();
   }
 }

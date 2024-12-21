@@ -40,4 +40,8 @@ class N {
   static void toChangeLanguage({RouteType type = RouteType.to}) {
     type.navigate(name: AppRoute.SE10);
   }
+
+  static void toHomePage({RouteType type = RouteType.to}) {
+    type.navigate(name: AppRoute.HOME_PAGE);
+  }
 }

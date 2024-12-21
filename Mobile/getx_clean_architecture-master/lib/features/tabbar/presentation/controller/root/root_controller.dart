@@ -36,7 +36,8 @@ class RootController extends BaseController {
   }
 
   void _handleAuthenticated() {
-    N.toHome(input: ExampleHomeInput('u', 'p'));
+    N.toHomePage();
+    //N.toHome(input: ExampleHomeInput('u', 'p'));
     Future.delayed(const Duration(milliseconds: 100), FlutterNativeSplash.remove);
 
     /*

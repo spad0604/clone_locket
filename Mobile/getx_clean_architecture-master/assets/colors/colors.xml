@@ -39,4 +39,8 @@
     <color name="orange_ffe">#FFEBD3</color>
     <color name="orange_fa9">#FA9C2D</color>
     <color name="orange_ddb">#DDB27E</color>
+
+    <color name="black_bgr">#111111</color>
+    <color name="gray_343">#343434</color>
+    <color name="yellow_5b9">#f5b944</color>
 </resources>

@@ -11,8 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.nguyengiap.locket.service.cloundinary_service.CloudinaryService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api/v1/upload")
+@RequiredArgsConstructor
 public class CloudinaryController {
     @Autowired
     private CloudinaryService cloudinaryService;

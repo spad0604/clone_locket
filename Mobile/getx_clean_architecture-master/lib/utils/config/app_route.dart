@@ -1,4 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
+import 'package:jbbase_app/features/home_page/presentation/controller/home_page_controller/home_page_binding.dart';
+import 'package:jbbase_app/features/home_page/presentation/view/home_page_view/home_page_view.dart';
+
 import '../../features/authentication/authentication.dart';
 import '../../features/example/example.dart';
 import '../../features/tabbar/tabbar.dart';
@@ -24,6 +27,8 @@ class AppRoute {
   static String EX10 = '/example_home';
 
   static String EX20 = '/example_home_list';
+
+  static String HOME_PAGE = '/home_page';
 
   static List<GetPage> generateGetPages = [
     // Base
@@ -76,6 +81,11 @@ class AppRoute {
       page: ExampleHomeListPage.new,
       binding: ExampleHomeListBinding(),
     ),
+    GetPage(
+      name: HOME_PAGE,
+      page: HomePageView.new,
+      binding: HomePageBinding()
+    )
   ];
 
   static GetPage? getPage(String name) {
