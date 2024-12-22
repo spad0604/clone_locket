@@ -13,8 +13,7 @@ import lombok.*;
 @Table(name = "_history_table")
 public class HistoryTable {
     @Id
-    private int imageId;
-    @Id
+    private Integer imageId;
     private String account;
     private int isSeen;
 }

@@ -1,7 +1,9 @@
 package com.nguyengiap.locket.model.image_table;
-import java.time.DateTimeException;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
@@ -15,9 +17,9 @@ import lombok.*;
 @Table(name = "_image_table")
 public class ImageTable {
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String imageUrl;
-    @Id
     private String account;
-    private DateTimeException dateTime;
+    private LocalDateTime dateTime;
 }
