@@ -14,4 +14,8 @@ public class ImageTableService{
     public void save(ImageTable imageTable) {
         imageTableRepository.save(imageTable);
     }
+
+    public Integer getImageId(String imageUrl) {
+        return imageTableRepository.getImageId(imageUrl);
+    }
 }

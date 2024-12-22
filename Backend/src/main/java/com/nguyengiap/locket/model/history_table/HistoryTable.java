@@ -15,5 +15,5 @@ public class HistoryTable {
     @Id
     private Integer imageId;
     private String account;
-    private int isSeen;
+    private Integer isSeen;
 }

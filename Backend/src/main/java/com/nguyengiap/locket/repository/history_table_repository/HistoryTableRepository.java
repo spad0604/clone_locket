@@ -15,10 +15,9 @@ import com.nguyengiap.locket.model.history_table.HistoryTable;
 @Repository
 public interface HistoryTableRepository extends JpaRepository<HistoryTable, Integer>{
     @Modifying
-    @Query("UPDATE HistoryTable h SET h.isSeen = :isSeen WHERE h.account = :account AND h.imageId = :id")
+    @Query("UPDATE HistoryTable h SET h.isSeen = 1 WHERE h.account = :account AND h.imageId = :id")
     void updateIsSeen(@Param("id") int id, @Param("account") String account);
     
     @Query("SELECT h FROM HistoryTable h WHERE h.account = :account")
     List<HistoryTable> getHistoryByAccount(@Param("account") String account);
-
 }
