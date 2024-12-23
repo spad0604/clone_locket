@@ -2,6 +2,8 @@ package com.nguyengiap.locket.controller.user_controller;
 
 import java.util.List;
 
+import com.nguyengiap.locket.model.friend_table.FriendTable;
+import com.nguyengiap.locket.service.friend_table_service.FriendTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,21 @@ public class UserController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private FriendTableService friendTableService;
+
+    @GetMapping("/list-friend")
+    public ResponseEntity<?> getListFriend(@RequestHeader("Authorization") String token) {
+        try {
+            final String user = jwtService.extractUserName(token.substring(7));
+            List<FriendTable> friendList = friendTableService.findFriendByAccount(user);
+
+            return ResponseEntity.ok().body(friendList);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
     @GetMapping("/history")
     public ResponseEntity<?> getHistory(@RequestHeader("Authorization") String token) {
