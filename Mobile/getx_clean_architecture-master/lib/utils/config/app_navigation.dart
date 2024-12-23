@@ -28,10 +28,6 @@ class N {
     type.navigate(name: AppRoute.LO10);
   }
 
-  static void toForgotPassword({RouteType type = RouteType.to}) {
-    type.navigate(name: AppRoute.LO20);
-  }
-
   static void toRegister({RouteType type = RouteType.to}) {
     type.navigate(name: AppRoute.RE10);
   }

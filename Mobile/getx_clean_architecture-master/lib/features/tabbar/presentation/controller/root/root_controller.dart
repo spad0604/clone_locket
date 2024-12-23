@@ -36,10 +36,11 @@ class RootController extends BaseController {
   }
 
   void _handleAuthenticated() {
-    N.toHomePage();
+    //N.toHomePage();
     //N.toHome(input: ExampleHomeInput('u', 'p'));
-    Future.delayed(const Duration(milliseconds: 100), FlutterNativeSplash.remove);
-
+    Future.delayed(
+        const Duration(milliseconds: 100), FlutterNativeSplash.remove);
+    N.toLogin();
     /*
     _getMasterDataUseCase.execute(
       observer: Observer(
@@ -57,7 +58,8 @@ class RootController extends BaseController {
 
   void _handleUnauthenticated() {
     _authService.logout().then((_) {
-      Future.delayed(const Duration(milliseconds: 100), FlutterNativeSplash.remove);
+      Future.delayed(
+          const Duration(milliseconds: 100), FlutterNativeSplash.remove);
     });
   }
 }

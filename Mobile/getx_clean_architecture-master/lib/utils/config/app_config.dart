@@ -17,7 +17,7 @@ class AppConfig {
   static Enviroment env = Enviroment.qa;
   static AppEnv appEnv = QaEnv();
 
-  static String baseUrl = '';
+  static String baseUrl = ''  ;
   static String apiKey = '';
   static String? currentProxy;
   static PackageInfo? _packageInfo;

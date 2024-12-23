@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
@@ -12,20 +13,17 @@ enum DioBulderType { withToken, ignoredToken, refresh }
 
 class DioBuilder extends DioMixin implements Dio {
   final String contentType = 'application/json';
-  final Duration connectionTimeOutMls = const Duration(seconds: 30);
-  final Duration readTimeOutMls = const Duration(seconds: 30);
-  final Duration writeTimeOutMls = const Duration(seconds: 30);
+  final int connectionTimeOutMls = 30000;
+  final int readTimeOutMls = 30000;
+  final int writeTimeOutMls = 30000;
 
-  DioBuilder(
-      {bool ignoredToken = false,
-      required BaseOptions options,
-      Dio? dioRefresh}) {
+  DioBuilder({bool ignoredToken = false, required BaseOptions options, Dio? dioRefresh}) {
     options = BaseOptions(
       baseUrl: options.baseUrl,
       contentType: contentType,
-      connectTimeout: connectionTimeOutMls,
-      receiveTimeout: readTimeOutMls,
-      sendTimeout: writeTimeOutMls,
+      connectTimeout: Duration(milliseconds: connectionTimeOutMls),
+      receiveTimeout: Duration(milliseconds: readTimeOutMls),
+      sendTimeout: Duration(milliseconds: writeTimeOutMls),
     );
 
     this.options = options;
@@ -52,6 +50,7 @@ class DioBuilder extends DioMixin implements Dio {
 
     // Debug mode
     if (kDebugMode) {
+      interceptors.add(CurlLoggerDioInterceptor());
       // interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
       interceptors.add(
         CustomLogInterceptor(
@@ -72,8 +71,7 @@ class DioBuilder extends DioMixin implements Dio {
     final proxy = AppConfig.currentProxy;
     if (proxy != null) {
       (httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate = (client) {
-        client.badCertificateCallback =
-            (X509Certificate cert, String host, int port) {
+        client.badCertificateCallback = (X509Certificate cert, String host, int port) {
           return Platform.isAndroid;
         };
         client.findProxy = (url) {
@@ -84,4 +82,23 @@ class DioBuilder extends DioMixin implements Dio {
       };
     }
   }
+
+  Dio get dio => this;
 }
+
+class CurlLoggerDioInterceptor extends Interceptor {
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    final method = options.method.toUpperCase();
+    final headers = options.headers.entries
+        .map((e) => '-H "${e.key}: ${e.value}"')
+        .join(' ');
+    final data = options.data != null ? '-d \'${options.data}\' ' : '';
+    final curl =
+        'curl -X $method "${options.uri}" $headers $data';
+
+    debugPrint(curl); // In ra log cURL
+    handler.next(options);
+  }
+}
+

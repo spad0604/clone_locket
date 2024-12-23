@@ -1,4 +1,5 @@
 import 'package:jbbase_app/base/domain/base_usecase.dart';
+import 'package:jbbase_app/base/presentation/presentation.dart';
 
 import '../../repositories/auth_repo.dart';
 import 'register_fcm_token_uc.dart';
@@ -15,7 +16,11 @@ class LoginWithEmailUseCase extends UseCaseIO<EmailPasswordRequest, void> {
 
   @override
   Future<void> build(EmailPasswordRequest input) async {
-    await _authRepo.loginWithEmail(input);
+    try {
+      await _authRepo.loginWithEmail(input);
+    } catch(e) {
+      debugPrint(e.toString());
+    }
     // await _getMasterDataUseCase.build();
 
     // final fcmToken = await _pushNotificationService.fcmToken;

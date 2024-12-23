@@ -1,6 +1,4 @@
-import 'package:jbbase_app/base/data/app_error.dart';
 import 'package:jbbase_app/base/domain/base_repo.dart';
-import 'package:jbbase_app/features/authentication/data/providers/local/user_storage_ex.dart';
 import 'package:jbbase_app/utils/service/log_service.dart';
 
 import '../../domain/repositories/auth_repo.dart';
@@ -18,12 +16,8 @@ class AuthRepoImpl extends AuthRepo {
 
   @override
   Future<void> loginWithEmail(EmailPasswordRequest request) async {
-    // final tokenModel = await _authAPI.loginWithEmail(request);
+     final tokenModel = await _authAPI.loginWithEmail(request);
     await Future.delayed(const Duration(seconds: 1));
-    final tokenModel = TokenModel()..accessToken = 'xxx';
-    if (tokenModel.accessToken == null) {
-      throw AppException(AppExceptionType.unauthorized, 'Invalid access token!');
-    }
     _localStorage.saveUserTokenData(tokenModel);
   }
 

@@ -72,8 +72,6 @@ extension UserStorageEx on LocalStorage {
   Future<void> saveUserTokenData(TokenModel? tokenModel) {
     return Future.wait([
       saveUserToken(tokenModel?.accessToken),
-      saveUserRefreshToken(tokenModel?.refreshToken),
-      saveUserTokenExpiredTime(tokenModel?.expireIn),
     ]);
   }
 

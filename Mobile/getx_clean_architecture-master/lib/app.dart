@@ -1,6 +1,7 @@
 import 'package:catcher_2/catcher_2.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:jbbase_app/features/authentication/data/providers/local/user_storage_ex.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      builder: EasyLoading.init(),
       supportedLocales: S.delegate.supportedLocales,
       initialRoute: AppRoute.root,
       initialBinding: AppBinding(),

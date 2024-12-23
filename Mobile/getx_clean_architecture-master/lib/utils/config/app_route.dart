@@ -17,8 +17,6 @@ class AppRoute {
   // Authentication
   static String LO10 = '/login';
 
-  static String LO20 = '/forgot_password';
-
   static String RE10 = '/register';
 
   // Example
@@ -54,11 +52,6 @@ class AppRoute {
       name: LO10,
       page: LoginPage.new,
       binding: LoginBinding(),
-    ),
-    GetPage(
-      name: LO20,
-      page: ForgotPasswordPage.new,
-      binding: ForgotPasswordBinding(),
     ),
     GetPage(
       name: RE10,

@@ -13,7 +13,7 @@ abstract class AuthAPI {
   @POST('/register')
   Future<void> registerWithEmail(@Body() EmailPasswordRequest request);
 
-  @POST('/login')
+  @POST('/auth/login')
   Future<TokenModel> loginWithEmail(@Body() EmailPasswordRequest request);
 
   @POST('/reset-password')
@@ -21,13 +21,13 @@ abstract class AuthAPI {
 }
 
 class EmailPasswordRequest {
-  final String email;
+  final String account;
   final String password;
 
-  EmailPasswordRequest(this.email, this.password);
+  EmailPasswordRequest(this.account, this.password);
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'email': email,
+        'account': account,
         'password': password,
       };
 }
