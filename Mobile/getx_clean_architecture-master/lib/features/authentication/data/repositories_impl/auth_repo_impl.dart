@@ -1,3 +1,4 @@
+import 'package:jbbase_app/base/base.dart';
 import 'package:jbbase_app/base/domain/base_repo.dart';
 import 'package:jbbase_app/utils/service/log_service.dart';
 

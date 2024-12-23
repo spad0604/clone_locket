@@ -10,7 +10,8 @@ class GetIamgeUseCase extends UseCaseIO<int, ImageModel> {
   @override
   Future<ImageModel> build(int input) async {
     try {
-      return await _userRepo.getImage(input);
+      final result = await _userRepo.getImage(input);
+      return result;
     } catch (e) {
       rethrow;
     }

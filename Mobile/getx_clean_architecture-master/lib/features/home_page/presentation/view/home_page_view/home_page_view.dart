@@ -24,7 +24,9 @@ class HomePageView extends BaseGetView<HomePageController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       _circleAvatar(
-                          url: 'https://avatars.githubusercontent.com/u/179314473?v=4', isOnline: true),
+                          url:
+                              'https://avatars.githubusercontent.com/u/179314473?v=4',
+                          isOnline: true),
                       CustomDropdown(),
                       _circleAvatar(
                           url: Assets.images.chatIc.path, isOnline: false)
@@ -34,13 +36,21 @@ class HomePageView extends BaseGetView<HomePageController> {
                 Column(
                   children: [
                     Center(
-                      child: Container(
-                        height: Get.width,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
+                      child: Obx(() => ClipRRect(
                             borderRadius: BorderRadius.circular(60),
-                            color: Colors.white),
-                      ),
+                            child: Container(
+                              height: Get.width,
+                              width: double.infinity,
+                              child: controller.imageModel.value != null
+                                  ? Image.network(
+                                      controller.imageModel.value!.imageUrl ??
+                                          'https://avatars.githubusercontent.com/u/179314473?v=4',
+                                      fit: BoxFit
+                                          .cover,
+                                    )
+                                  : SizedBox(),
+                            ),
+                          )),
                     ),
                     const SizedBox(
                       height: 15,
@@ -52,10 +62,10 @@ class HomePageView extends BaseGetView<HomePageController> {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                              shape: BoxShape.circle, 
+                              shape: BoxShape.circle,
                               border: Border.all(
                                 color: Colors.transparent,
-                                width: 2, 
+                                width: 2,
                               ),
                             ),
                             child: ClipOval(
@@ -63,8 +73,7 @@ class HomePageView extends BaseGetView<HomePageController> {
                                 'https://avatars.githubusercontent.com/u/179314473?v=4',
                                 width: 30,
                                 height: 30,
-                                fit: BoxFit
-                                    .cover, 
+                                fit: BoxFit.cover,
                               ),
                             ),
                           ),
@@ -144,12 +153,12 @@ class HomePageView extends BaseGetView<HomePageController> {
                 height: 30,
               )
             : ClipOval(
-              child: Image.network(
+                child: Image.network(
                   url,
                   width: 30,
                   height: 30,
                 ),
-            ),
+              ),
       ),
     );
   }

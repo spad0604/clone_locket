@@ -32,8 +32,8 @@ abstract class UserAPI {
   Future<List<HistoryModel>> getHistory();
 
   @GET('/user/seen-image')
-  Future<void> seenImage(@Field('id') int id);
+  Future<void> seenImage(@Query('id') int id);
 
   @GET('/user/get-image')
-  Future<ImageModel> getImage(@Field('id') int id);
+  Future<ImageModel> getImage(@Query('id') int id);
 }

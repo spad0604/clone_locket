@@ -1,10 +1,12 @@
 import 'package:jbbase_app/base/data/model/pretty_json_mixin.dart';
 
-@jsonSerializable
-@Json(caseStyle: CaseStyle.snake, ignoreNullMembers: true, name: 'data')
+@JsonSerializable()
+@Json(caseStyle: CaseStyle.snake, ignoreNullMembers: true)
 class TokenModel with PrettyJsonMixin {
-  @JsonProperty(name: ['token', 'account'])
-  String? accessToken;
+  @JsonProperty(name: 'token')
+  String? token;
 
+  @JsonProperty(name: 'account')
   String? account;
 }
+
