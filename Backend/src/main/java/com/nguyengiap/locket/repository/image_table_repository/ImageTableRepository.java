@@ -12,4 +12,6 @@ public interface ImageTableRepository extends JpaRepository<ImageTable, Integer>
     @Query("SELECT h.id FROM ImageTable h WHERE h.imageUrl = :imageUrl")
     public Integer getImageId(@Param("imageUrl") String imageUrl);
 
+    @Query("SELECT h FROM ImageTable h WHERE h.id = :id")
+    public ImageTable getImageById(@Param("id") Integer id);
 }

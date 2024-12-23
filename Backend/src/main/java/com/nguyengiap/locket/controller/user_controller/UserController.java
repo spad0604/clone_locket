@@ -3,7 +3,9 @@ package com.nguyengiap.locket.controller.user_controller;
 import java.util.List;
 
 import com.nguyengiap.locket.model.friend_table.FriendTable;
+import com.nguyengiap.locket.model.image_table.ImageTable;
 import com.nguyengiap.locket.service.friend_table_service.FriendTableService;
+import com.nguyengiap.locket.service.image_table_service.ImageTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +34,9 @@ public class UserController {
     @Autowired
     private FriendTableService friendTableService;
 
+    @Autowired
+    private ImageTableService imageTableService;
+
     @GetMapping("/list-friend")
     public ResponseEntity<?> getListFriend(@RequestHeader("Authorization") String token) {
         try {
@@ -39,6 +44,17 @@ public class UserController {
             List<FriendTable> friendList = friendTableService.findFriendByAccount(user);
 
             return ResponseEntity.ok().body(friendList);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/get-image")
+    public ResponseEntity<?> getImage(@RequestHeader("Authorization") String token, @RequestParam("id") Integer id) {
+        try {
+            ImageTable image = imageTableService.getImageById(id);
+
+            return ResponseEntity.ok().body(image);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

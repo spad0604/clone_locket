@@ -2,6 +2,7 @@ package com.nguyengiap.locket.controller.cloudinary_controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -67,7 +68,7 @@ public class CloudinaryController {
             // Update History Table
             if (!friendList.isEmpty()) {
                 for (FriendTable friend : friendList) {
-                    if (friend.getAccount1() != account) {
+                    if (!Objects.equals(friend.getAccount1(), account)) {
                         HistoryTable historyTable = HistoryTable.builder()
                                 .account(friend.getAccount1())
                                 .imageId(imageId)

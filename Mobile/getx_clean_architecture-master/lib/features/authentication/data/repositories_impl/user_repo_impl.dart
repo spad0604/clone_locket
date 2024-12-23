@@ -1,4 +1,7 @@
 import 'package:jbbase_app/base/domain/base_repo.dart';
+import 'package:jbbase_app/features/home_page/data/model/friend_table_model.dart';
+import 'package:jbbase_app/features/home_page/data/model/history-model.dart';
+import 'package:jbbase_app/features/home_page/data/model/image_model.dart';
 
 import '../../domain/repositories/user_repo.dart';
 import '../providers/remote/api/user_api.dart';
@@ -30,5 +33,25 @@ class UserRepoImpl extends UserRepo {
   @override
   Future<void> registerFcmToken(String token) {
     return _userAPI.registerFcmToken(token);
+  }
+
+  @override
+  Future<List<HistoryModel>> getHistory() {
+    return _userAPI.getHistory();
+  }
+
+  @override
+  Future<ImageModel> getImage(int id) {
+    return _userAPI.getImage(id);
+  }
+
+  @override
+  Future<List<FriendTableModel>> getListFiend() {
+    return _userAPI.getListFiend();
+  }
+
+  @override
+  Future<void> seenImage(int id) {
+    return _userAPI.seenImage(id);
   }
 }

@@ -18,4 +18,8 @@ public class ImageTableService{
     public Integer getImageId(String imageUrl) {
         return imageTableRepository.getImageId(imageUrl);
     }
+
+    public ImageTable getImageById(Integer id) {
+        return imageTableRepository.getImageById(id);
+    }
 }

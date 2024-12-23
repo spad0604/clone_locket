@@ -1,5 +1,8 @@
 import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:dio/dio.dart';
+import 'package:jbbase_app/features/home_page/data/model/friend_table_model.dart';
+import 'package:jbbase_app/features/home_page/data/model/history-model.dart';
+import 'package:jbbase_app/features/home_page/data/model/image_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../../models/user_model.dart';
@@ -21,4 +24,16 @@ abstract class UserAPI {
 
   @POST('/logout')
   Future<void> logout();
+
+  @GET('/user/list-friend')
+  Future<List<FriendTableModel>> getListFiend();
+
+  @GET('/user/history')
+  Future<List<HistoryModel>> getHistory();
+
+  @GET('/user/seen-image')
+  Future<void> seenImage(@Field('id') int id);
+
+  @GET('/user/get-image')
+  Future<ImageModel> getImage(@Field('id') int id);
 }
