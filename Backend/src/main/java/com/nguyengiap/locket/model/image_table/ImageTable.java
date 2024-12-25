@@ -1,6 +1,7 @@
 package com.nguyengiap.locket.model.image_table;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,5 +22,7 @@ public class ImageTable {
     private Integer id;
     private String imageUrl;
     private String account;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dateTime;
 }

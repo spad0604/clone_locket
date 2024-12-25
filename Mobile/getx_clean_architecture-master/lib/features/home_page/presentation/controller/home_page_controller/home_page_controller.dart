@@ -23,6 +23,7 @@ class HomePageController extends BaseController {
     EasyLoading.show(status: 'Loading...');
     await getHistory();
     await getListFriend();
+    await getImage(1);
     EasyLoading.dismiss();
     super.onInit();
   }
@@ -30,7 +31,6 @@ class HomePageController extends BaseController {
   Future<void> getHistory() async{
     try {
       history.value = await getHistoryUseCase.build(null);
-      await getImage(history[0].imageId ?? 1);
     } catch (e){
       history.value = [];
     }
@@ -46,7 +46,8 @@ class HomePageController extends BaseController {
 
   Future<void> getImage(int id) async {
     try {
-      imageModel.value = await getIamgeUseCase.build(id);
+      final imageModel = await getIamgeUseCase.build(id);
+      debugPrint('ola ${imageModel.toString()}');
     } catch (e) {
       debugPrint(e.toString());
     }
