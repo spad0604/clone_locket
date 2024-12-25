@@ -46,8 +46,8 @@ class HomePageController extends BaseController {
 
   Future<void> getImage(int id) async {
     try {
-      final imageModel = await getIamgeUseCase.build(id);
-      debugPrint('ola ${imageModel.toString()}');
+      final image = await getIamgeUseCase.build(id);
+      imageModel.value = image;
     } catch (e) {
       debugPrint(e.toString());
     }
