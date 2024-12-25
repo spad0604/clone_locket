@@ -40,4 +40,12 @@ class N {
   static void toHomePage({RouteType type = RouteType.to}) {
     type.navigate(name: AppRoute.HOME_PAGE);
   }
+
+  static void toCameraPage({RouteType type = RouteType.to}) {
+    type.navigate(name: AppRoute.CAMERA_PAGE);
+  }
+
+  static void toHomeRootPage({RouteType type = RouteType.to}) {
+    type.navigate(name: AppRoute.HOME_ROOT_PAGE);
+  }
 }

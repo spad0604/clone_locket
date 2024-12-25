@@ -7,7 +7,7 @@ class HomePageBinding extends Bindings{
   void dependencies() {
     Get.lazyPut(() => HomePageController());
 
-    Get.lazyPut(() => GetIamgeUseCase(Get.find()));
+    Get.lazyPut(() => GetImageUseCase(Get.find()));
 
     Get.lazyPut(() => GetHistoryUseCase(Get.find()));
 

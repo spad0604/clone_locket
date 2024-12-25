@@ -34,7 +34,7 @@ class LoginController extends BaseController {
     try {
       EasyLoading.show(status: 'Loading...');
       await _loginWithEmailUseCase.build(request);
-      N.toHomePage();
+      N.toHomeRootPage();
       EasyLoading.dismiss();
     } catch(e) {
       rethrow;

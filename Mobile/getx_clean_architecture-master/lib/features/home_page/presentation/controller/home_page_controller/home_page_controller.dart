@@ -6,7 +6,7 @@ import 'package:jbbase_app/features/home_page/data/model/history-model.dart';
 import 'package:jbbase_app/features/home_page/data/model/image_model.dart';
 
 class HomePageController extends BaseController {
-  final GetIamgeUseCase getIamgeUseCase = Get.find();
+  final GetImageUseCase getIamgeUseCase = Get.find();
 
   final GetListFriendUseCase getListFriendUseCase = Get.find();
 

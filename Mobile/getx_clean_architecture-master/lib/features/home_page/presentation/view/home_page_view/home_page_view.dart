@@ -23,12 +23,12 @@ class HomePageView extends BaseGetView<HomePageController> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _circleAvatar(
+                      circleAvatar(
                           url:
                               'https://avatars.githubusercontent.com/u/179314473?v=4',
                           isOnline: true),
                       CustomDropdown(),
-                      _circleAvatar(
+                      circleAvatar(
                           url: Assets.images.chatIc.path, isOnline: false)
                     ],
                   ),
@@ -137,31 +137,31 @@ class HomePageView extends BaseGetView<HomePageController> {
       ),
     );
   }
+}
 
-  Widget _circleAvatar({required String url, required bool isOnline}) {
-    return Container(
-      height: 40,
-      width: 40,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30), color: ColorName.gray343),
-      child: Center(
-        child: isOnline == false
-            ? Image.asset(
-                color: Colors.white,
-                url,
-                width: 30,
-                height: 30,
-              )
-            : ClipOval(
-                child: Image.network(
-                  url,
-                  width: 30,
-                  height: 30,
-                ),
-              ),
+Widget circleAvatar({required String url, required bool isOnline}) {
+  return Container(
+    height: 40,
+    width: 40,
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30), color: ColorName.gray343),
+    child: Center(
+      child: isOnline == false
+          ? Image.asset(
+        color: Colors.white,
+        url,
+        width: 30,
+        height: 30,
+      )
+          : ClipOval(
+        child: Image.network(
+          url,
+          width: 30,
+          height: 30,
+        ),
       ),
-    );
-  }
+    ),
+  );
 }
 
 class CustomDropdown extends StatefulWidget {

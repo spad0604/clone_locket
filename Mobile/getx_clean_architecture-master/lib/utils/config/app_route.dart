@@ -1,9 +1,13 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:jbbase_app/features/home_page/presentation/controller/home_page_controller/home_page_binding.dart';
+import 'package:jbbase_app/features/home_page/presentation/controller/root_home_page_controller/root_home_page_binding.dart';
+import 'package:jbbase_app/features/home_page/presentation/view/camera_page_view/camera_page_view.dart';
 import 'package:jbbase_app/features/home_page/presentation/view/home_page_view/home_page_view.dart';
+import 'package:jbbase_app/features/home_page/presentation/view/root_home_page_view/root_home_page_view.dart';
 
 import '../../features/authentication/authentication.dart';
 import '../../features/example/example.dart';
+import '../../features/home_page/presentation/controller/camera_page_controller/camera_page_binding.dart';
 import '../../features/tabbar/tabbar.dart';
 
 class AppRoute {
@@ -26,7 +30,11 @@ class AppRoute {
 
   static String EX20 = '/example_home_list';
 
+  static String HOME_ROOT_PAGE = '/home_root_page';
+
   static String HOME_PAGE = '/home_page';
+
+  static String CAMERA_PAGE = '/camera_page';
 
   static List<GetPage> generateGetPages = [
     // Base
@@ -75,9 +83,15 @@ class AppRoute {
       binding: ExampleHomeListBinding(),
     ),
     GetPage(
-      name: HOME_PAGE,
-      page: HomePageView.new,
-      binding: HomePageBinding()
+        name: HOME_PAGE, page: HomePageView.new, binding: HomePageBinding()),
+    GetPage(
+        name: CAMERA_PAGE,
+        page: CameraPageView.new,
+        binding: CameraPageBinding()),
+    GetPage(
+        name: HOME_ROOT_PAGE,
+        page: RootHomePageView.new,
+        binding: RootHomePageBinding()
     )
   ];
 
