@@ -1,5 +1,6 @@
 package com.nguyengiap.locket;
 
+import com.nguyengiap.locket.service.user_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,11 +16,10 @@ import jakarta.annotation.PostConstruct;
 @SpringBootApplication(scanBasePackages = "com.nguyengiap.locket")
 public class LocketApplication {
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userRepository;
 
 	@Autowired
 	private FriendTableService friendTableService;
-
 	public static void main(String[] args) {
 		SpringApplication.run(LocketApplication.class, args);
 	}

@@ -8,6 +8,7 @@ class RootHomePageView extends BaseGetView<RootHomePageController> {
   Widget myBuild(BuildContext context) {
     return Scaffold(
       body: PageView(
+        controller: controller.pageController,
         scrollDirection: Axis.vertical,
         children: [
           CameraPageView(),

@@ -1,7 +1,9 @@
 // ignore_for_file: non_constant_identifier_names
+import 'package:jbbase_app/features/home_page/presentation/controller/grid_image_controller/gird_image_binding.dart';
 import 'package:jbbase_app/features/home_page/presentation/controller/home_page_controller/home_page_binding.dart';
 import 'package:jbbase_app/features/home_page/presentation/controller/root_home_page_controller/root_home_page_binding.dart';
 import 'package:jbbase_app/features/home_page/presentation/view/camera_page_view/camera_page_view.dart';
+import 'package:jbbase_app/features/home_page/presentation/view/grid_image_view/gird_image_view.dart';
 import 'package:jbbase_app/features/home_page/presentation/view/home_page_view/home_page_view.dart';
 import 'package:jbbase_app/features/home_page/presentation/view/root_home_page_view/root_home_page_view.dart';
 
@@ -35,6 +37,8 @@ class AppRoute {
   static String HOME_PAGE = '/home_page';
 
   static String CAMERA_PAGE = '/camera_page';
+
+  static String GRID_IMAGE = '/grid_image';
 
   static List<GetPage> generateGetPages = [
     // Base
@@ -91,8 +95,11 @@ class AppRoute {
     GetPage(
         name: HOME_ROOT_PAGE,
         page: RootHomePageView.new,
-        binding: RootHomePageBinding()
-    )
+        binding: RootHomePageBinding()),
+    GetPage(
+        name: GRID_IMAGE,
+        page: GridImageView.new,
+        binding: GridImageBinding())
   ];
 
   static GetPage? getPage(String name) {

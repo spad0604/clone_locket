@@ -1,7 +1,10 @@
 import 'package:jbbase_app/base/base.dart';
 import 'package:jbbase_app/features/home_page/presentation/controller/home_page_controller/home_page_controller.dart';
+import 'package:jbbase_app/features/home_page/presentation/controller/root_home_page_controller/root_home_page_controller.dart';
 
 class HomePageView extends BaseGetView<HomePageController> {
+  final rootHomePageController = Get.find<RootHomePageController>();
+
   @override
   Widget myBuild(BuildContext context) {
     return Scaffold(
@@ -11,21 +14,23 @@ class HomePageView extends BaseGetView<HomePageController> {
         child: Stack(
           children: [
             Positioned.fill(
-              child: Obx(
-                () => PageView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: controller.history.length,
-                  itemBuilder: (context, index){
-                    controller.getImage(controller.history[index].imageId ?? 1);
-                    return controller.imageModel.value != null ? BuildImage(
-                        imageUrl: controller.imageModel.value!.imageUrl ?? 'https://cdn-icons-png.flaticon.com/512/10278/10278187.png',
-                        userName: controller.imageModel.value!.account ?? 'User',
-                      ) : SizedBox(
-                        height: Get.width,
-                        width: Get.width,
-                    );
-                  },
-                ),
+              child: PageView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: controller.imageModel.length,
+                itemBuilder: (context, index) {
+                  return controller.imageModel.isNotEmpty
+                      ? BuildImage(
+                          imageUrl: controller.imageModel[index].imageUrl ??
+                              'https://cdn-icons-png.flaticon.com/512/10278/10278187.png',
+                          userName:
+                              controller.imageModel[index].account ?? 'User',
+                          userAvatar: null,
+                        )
+                      : SizedBox(
+                          height: Get.width,
+                          width: Get.width,
+                        );
+                },
               ),
             ),
             Positioned.fill(
@@ -83,12 +88,20 @@ class HomePageView extends BaseGetView<HomePageController> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Assets.images.menuIc.image(
-                              height: 30,
-                              width: 30,
-                              color: Colors.white,
+                            GestureDetector(
+                              onTap: () {
+                                controller.toGridImagePage();
+                              },
+                              child: Assets.images.menuIc.image(
+                                height: 30,
+                                width: 30,
+                                color: Colors.white,
+                              ),
                             ),
-                            const CircleCapture(),
+                            CircleCapture(
+                              onTapCapture:
+                                  rootHomePageController.jumpToFirstPage,
+                            ),
                             Assets.images.infoIc.image(
                               height: 30,
                               width: 30,
@@ -111,9 +124,10 @@ class HomePageView extends BaseGetView<HomePageController> {
 
 class BuildImage extends StatelessWidget {
   final String imageUrl;
+  final String? userAvatar;
   final String userName;
 
-  const BuildImage({required this.imageUrl, required this.userName});
+  const BuildImage({required this.imageUrl, required this.userAvatar, required this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -126,17 +140,16 @@ class BuildImage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: Obx(() => ClipRRect(
-                  borderRadius: BorderRadius.circular(60),
-                  child: SizedBox(
-                      height: Get.width,
-                      width: double.infinity,
-                      child: Image.network(
-                        imageUrl,
-                        fit: BoxFit.cover,
-                      )),
+              child: ClipRRect(
+            borderRadius: BorderRadius.circular(60),
+            child: SizedBox(
+                height: Get.width,
+                width: double.infinity,
+                child: Image.network(
+                  imageUrl,
+                  fit: BoxFit.cover,
                 )),
-          ),
+          )),
           const SizedBox(
             height: 15,
           ),
@@ -153,14 +166,14 @@ class BuildImage extends StatelessWidget {
                       width: 2,
                     ),
                   ),
-                  child: ClipOval(
+                  child: userAvatar != null ? ClipOval(
                     child: Image.network(
                       imageUrl,
                       width: 30,
                       height: 30,
                       fit: BoxFit.cover,
                     ),
-                  ),
+                  ) : const SizedBox(),
                 ),
                 const SizedBox(
                   width: 5,
@@ -263,33 +276,40 @@ class _CustomDropdownState extends State<CustomDropdown> {
 }
 
 class CircleCapture extends StatelessWidget {
-  const CircleCapture({super.key});
+  Function()? onTapCapture;
+
+  CircleCapture({super.key, required this.onTapCapture});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 40,
-        width: 40,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(40),
-            color: ColorName.yellow5b9),
-        child: Center(
-          child: Container(
-            width: 35,
-            height: 35,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(35),
-                color: ColorName.blackBgr),
-            child: Center(
-              child: Container(
-                width: 30,
-                height: 30,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Colors.white),
+    return GestureDetector(
+      onTap: () {
+        onTapCapture!.call();
+      },
+      child: Container(
+          height: 40,
+          width: 40,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40),
+              color: ColorName.yellow5b9),
+          child: Center(
+            child: Container(
+              width: 35,
+              height: 35,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(35),
+                  color: ColorName.blackBgr),
+              child: Center(
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.white),
+                ),
               ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 }

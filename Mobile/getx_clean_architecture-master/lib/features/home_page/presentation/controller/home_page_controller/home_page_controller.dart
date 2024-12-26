@@ -17,17 +17,17 @@ class HomePageController extends BaseController {
   final LoginController loginController = Get.find();
 
   Rx<String> account = ''.obs;
-  
+
   RxList<HistoryModel> history = RxList<HistoryModel>();
 
   RxList<String> listFriend = RxList();
 
   RxList<FriendTableModel> friendList = RxList<FriendTableModel>();
 
-  Rxn<ImageModel> imageModel = Rxn<ImageModel>();
+  RxList<ImageModel> imageModel = RxList();
 
   @override
-  void onInit() async{
+  void onInit() async {
     EasyLoading.show(status: 'Loading...');
     await getUserAccount();
     await getHistory();
@@ -38,12 +38,20 @@ class HomePageController extends BaseController {
 
   Future<void> getUserAccount() async {
     account.value = loginController.emailTextEditingController.text;
-}
+  }
 
-  Future<void> getHistory() async{
+  Future<void> getHistory() async {
     try {
       history.value = await getHistoryUseCase.build(null);
-    } catch (e){
+      if (history.isNotEmpty) {
+        for (HistoryModel historyModel in history) {
+          if (historyModel.isSeen == 0) {
+            await getImage(historyModel.imageId ?? 1);
+          }
+        }
+      }
+      imageModel.value = imageModel.reversed.toList();
+    } catch (e) {
       history.value = [];
     }
   }
@@ -51,9 +59,8 @@ class HomePageController extends BaseController {
   Future<void> getListFriend() async {
     try {
       friendList.value = await getListFriendUseCase.build(null);
-      if(friendList.isNotEmpty) {
+      if (friendList.isNotEmpty) {
         for (FriendTableModel friend in friendList) {
-          debugPrint('hmm ${friend.account1}');
           if (friend.account1 != account.value) {
             listFriend.add(friend.account1!);
           } else {
@@ -61,7 +68,6 @@ class HomePageController extends BaseController {
           }
         }
       }
-      debugPrint('test ${listFriend.length}');
     } catch (e) {
       friendList.value = [];
     }
@@ -70,9 +76,13 @@ class HomePageController extends BaseController {
   Future<void> getImage(int id) async {
     try {
       final image = await getIamgeUseCase.build(id);
-      imageModel.value = image;
+      imageModel.add(image);
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+  void toGridImagePage() {
+    N.toGridImage();
   }
 }

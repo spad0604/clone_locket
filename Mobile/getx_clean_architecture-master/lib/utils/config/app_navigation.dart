@@ -48,4 +48,8 @@ class N {
   static void toHomeRootPage({RouteType type = RouteType.to}) {
     type.navigate(name: AppRoute.HOME_ROOT_PAGE);
   }
+
+  static void toGridImage({RouteType type = RouteType.to}) {
+    type.navigate(name: AppRoute.GRID_IMAGE);
+  }
 }
