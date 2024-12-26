@@ -30,7 +30,7 @@ class LoginController extends BaseController {
   }
 
   void onTapContinue() async{
-    EmailPasswordRequest request = EmailPasswordRequest(emailTextEditingController.text, passwordTextEditingController.text);
+    final EmailPasswordRequest request = EmailPasswordRequest(emailTextEditingController.text, passwordTextEditingController.text);
     try {
       EasyLoading.show(status: 'Loading...');
       await _loginWithEmailUseCase.build(request);

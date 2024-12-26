@@ -123,11 +123,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:21.0.0' 
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-analytics'
-
-    implementation "androidx.camera:camera-core:1.5.0-alpha04"
-    implementation "androidx.camera:camera-camera2:1.5.0-alpha04"
-    implementation "androidx.camera:camera-video:1.5.0-alpha04"
-
 }
 
 apply plugin: 'com.google.firebase.crashlytics'

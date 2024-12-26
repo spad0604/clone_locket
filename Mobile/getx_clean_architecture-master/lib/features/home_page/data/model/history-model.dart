@@ -2,7 +2,7 @@ import '../../../../base/base.dart';
 import 'package:dart_json_mapper/dart_json_mapper.dart';
 
 @jsonSerializable
-@Json(caseStyle: CaseStyle.snake, ignoreNullMembers: true)
+@Json(caseStyle: CaseStyle.camel, ignoreNullMembers: true)
 class HistoryModel {
     final int? imageId;
     final String? account;

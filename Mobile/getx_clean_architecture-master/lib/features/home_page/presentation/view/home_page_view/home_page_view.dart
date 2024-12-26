@@ -8,132 +8,174 @@ class HomePageView extends BaseGetView<HomePageController> {
       resizeToAvoidBottomInset: true,
       backgroundColor: ColorName.blackBgr,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: SizedBox(
-            height: Get.height -
-                MediaQuery.of(context).padding.top -
-                MediaQuery.of(context).padding.bottom,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      circleAvatar(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Obx(
+                () => PageView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: controller.history.length,
+                  itemBuilder: (context, index){
+                    controller.getImage(controller.history[index].imageId ?? 1);
+                    return controller.imageModel.value != null ? BuildImage(
+                        imageUrl: controller.imageModel.value!.imageUrl ?? 'https://cdn-icons-png.flaticon.com/512/10278/10278187.png',
+                        userName: controller.imageModel.value!.account ?? 'User',
+                      ) : SizedBox(
+                        height: Get.width,
+                        width: Get.width,
+                    );
+                  },
+                ),
+              ),
+            ),
+            Positioned.fill(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        circleAvatar(
                           url:
                               'https://avatars.githubusercontent.com/u/179314473?v=4',
-                          isOnline: true),
-                      CustomDropdown(),
-                      circleAvatar(
-                          url: Assets.images.chatIc.path, isOnline: false)
-                    ],
+                          isOnline: true,
+                        ),
+                        CustomDropdown(),
+                        circleAvatar(
+                          url: Assets.images.chatIc.path,
+                          isOnline: false,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Column(
-                  children: [
-                    Center(
-                      child: Obx(() => ClipRRect(
-                            borderRadius: BorderRadius.circular(60),
-                            child: Container(
-                              height: Get.width,
-                              width: double.infinity,
-                              child: controller.imageModel.value != null
-                                  ? Image.network(
-                                      controller.imageModel.value!.imageUrl ??
-                                          'https://avatars.githubusercontent.com/u/179314473?v=4',
-                                      fit: BoxFit
-                                          .cover,
-                                    )
-                                  : SizedBox(),
-                            ),
-                          )),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.transparent,
-                                width: 2,
-                              ),
-                            ),
-                            child: ClipOval(
-                              child: Image.network(
-                                'https://avatars.githubusercontent.com/u/179314473?v=4',
-                                width: 30,
-                                height: 30,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            'User',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(15),
-                      child: Container(
-                        padding: const EdgeInsets.only(left: 15),
-                        decoration: BoxDecoration(
+                  Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(15),
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 15),
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(24),
-                            color: ColorName.gray343),
-                        child: TextField(
-                          controller: TextEditingController(),
-                          decoration: const InputDecoration(
+                            color: ColorName.gray343,
+                          ),
+                          child: TextField(
+                            controller: TextEditingController(),
+                            decoration: const InputDecoration(
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                               hintText: 'Gửi tin nhắn...',
                               hintStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold)),
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Assets.images.menuIc.image(
-                              height: 30, width: 30, color: Colors.white),
-                          const CircleCapture(),
-                          Assets.images.infoIc
-                              .image(height: 30, width: 30, color: Colors.white)
-                        ],
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Assets.images.menuIc.image(
+                              height: 30,
+                              width: 30,
+                              color: Colors.white,
+                            ),
+                            const CircleCapture(),
+                            Assets.images.infoIc.image(
+                              height: 30,
+                              width: 30,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
                       ),
-                    )
-                  ],
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BuildImage extends StatelessWidget {
+  final String imageUrl;
+  final String userName;
+
+  const BuildImage({required this.imageUrl, required this.userName});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: Get.height -
+          MediaQuery.of(context).padding.top -
+          MediaQuery.of(context).padding.bottom,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Obx(() => ClipRRect(
+                  borderRadius: BorderRadius.circular(60),
+                  child: SizedBox(
+                      height: Get.width,
+                      width: double.infinity,
+                      child: Image.network(
+                        imageUrl,
+                        fit: BoxFit.cover,
+                      )),
+                )),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.transparent,
+                      width: 2,
+                    ),
+                  ),
+                  child: ClipOval(
+                    child: Image.network(
+                      imageUrl,
+                      width: 30,
+                      height: 30,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  userName,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
+                )
               ],
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -148,18 +190,18 @@ Widget circleAvatar({required String url, required bool isOnline}) {
     child: Center(
       child: isOnline == false
           ? Image.asset(
-        color: Colors.white,
-        url,
-        width: 30,
-        height: 30,
-      )
+              color: Colors.white,
+              url,
+              width: 30,
+              height: 30,
+            )
           : ClipOval(
-        child: Image.network(
-          url,
-          width: 30,
-          height: 30,
-        ),
-      ),
+              child: Image.network(
+                url,
+                width: 30,
+                height: 30,
+              ),
+            ),
     ),
   );
 }
@@ -170,10 +212,16 @@ class CustomDropdown extends StatefulWidget {
 }
 
 class _CustomDropdownState extends State<CustomDropdown> {
+  final HomePageController controller = Get.find();
+
   String selectedValue = 'Tất cả bạn bè';
 
   @override
   Widget build(BuildContext context) {
+    if (!controller.listFriend.contains('Tất cả bạn bè')) {
+      controller.listFriend.insert(0, 'Tất cả bạn bè');
+    }
+
     return Center(
       child: Container(
         height: 40,
@@ -185,38 +233,15 @@ class _CustomDropdownState extends State<CustomDropdown> {
         child: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
             value: selectedValue,
-            items: const [
-              DropdownMenuItem(
-                value: 'Tất cả bạn bè',
-                child: Text(
-                  'Tất cả bạn bè',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              DropdownMenuItem(
-                value: 'Bạn thân',
-                child: Text(
-                  'Bạn thân',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              DropdownMenuItem(
-                value: 'Gia đình',
-                child: Text(
-                  'Gia đình',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
+            items: controller.listFriend
+                .map((item) => DropdownMenuItem(
+                    value: item,
+                    child: Text(
+                      item,
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    )))
+                .toList(),
             onChanged: (value) {
               setState(() {
                 selectedValue = value!;
