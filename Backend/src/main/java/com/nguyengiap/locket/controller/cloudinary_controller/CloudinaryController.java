@@ -65,6 +65,13 @@ public class CloudinaryController {
             // Get image Id
             Integer imageId = imageTableService.getImageId(url);
 
+            HistoryTable accountImage = HistoryTable.builder()
+                    .account(account)
+                    .imageId(imageId)
+                    .isSeen(0)
+                    .build();
+            historyTableService.save(accountImage);
+
             // Update History Table
             if (!friendList.isEmpty()) {
                 for (FriendTable friend : friendList) {
