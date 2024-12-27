@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import com.nguyengiap.locket.model.image_table.ImageTable;
 import com.nguyengiap.locket.repository.image_table_repository.ImageTableRepository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ImageTableService{
     @Autowired
@@ -21,5 +24,17 @@ public class ImageTableService{
 
     public ImageTable getImageById(Integer id) {
         return imageTableRepository.getImageById(id);
+    }
+
+    public List<ImageTable> getImageByAccount(String account) {
+        return imageTableRepository.getImageByAccount(account);
+    }
+
+    public void deleteImage(int id) {
+        imageTableRepository.deleteImage(id);
+    }
+
+    public Optional<ImageTable> checkImageBelongAccount(int id, String account) {
+        return imageTableRepository.checkImageBelongAccount(id, account);
     }
 }

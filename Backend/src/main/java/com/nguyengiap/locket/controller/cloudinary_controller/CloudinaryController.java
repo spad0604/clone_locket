@@ -1,6 +1,7 @@
 package com.nguyengiap.locket.controller.cloudinary_controller;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -65,32 +66,25 @@ public class CloudinaryController {
             // Get image Id
             Integer imageId = imageTableService.getImageId(url);
 
-            HistoryTable accountImage = HistoryTable.builder()
-                    .account(account)
-                    .imageId(imageId)
-                    .isSeen(0)
-                    .build();
-            historyTableService.save(accountImage);
-
             // Update History Table
             if (!friendList.isEmpty()) {
+                List<HistoryTable> histories = new ArrayList<>();
                 for (FriendTable friend : friendList) {
-                    if (!Objects.equals(friend.getAccount1(), account)) {
                         HistoryTable historyTable = HistoryTable.builder()
                                 .account(friend.getAccount1())
                                 .imageId(imageId)
                                 .isSeen(0)
                                 .build();
-                        historyTableService.save(historyTable);
-                    } else {
-                        HistoryTable historyTable = HistoryTable.builder()
+                        histories.add(historyTable);
+
+                        HistoryTable historyTable2 = HistoryTable.builder()
                                 .account(friend.getAccount2())
                                 .imageId(imageId)
                                 .isSeen(0)
                                 .build();
-                        historyTableService.save(historyTable);
-                    }
+                        histories.add(historyTable2);
                 }
+                historyTableService.saveAll(histories);
             }
 
             imageTableService.save(imageTable);

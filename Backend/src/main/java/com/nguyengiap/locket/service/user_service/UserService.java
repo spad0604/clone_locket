@@ -1,5 +1,6 @@
 package com.nguyengiap.locket.service.user_service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,13 @@ public class UserService{
 
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    public List<User> findFriend(String account) {
+        return userRepository.findFriendInfo(account);
+    }
+
+    public void updateAvatar(String account, String avatarUrl) {
+        userRepository.updateAvatar(account, avatarUrl);
     }
 }

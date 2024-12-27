@@ -1,5 +1,6 @@
 package com.nguyengiap.locket.model.user;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -24,6 +25,7 @@ public class User implements UserDetails {
     private String email;
     private String firstName;
     private String lastName;
+    @Column(length = 1000)
     private String avatarUrl;
 
     @Override

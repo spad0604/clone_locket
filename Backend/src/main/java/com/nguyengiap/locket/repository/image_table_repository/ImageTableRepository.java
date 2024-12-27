@@ -9,20 +9,23 @@ import org.springframework.data.repository.query.Param;
 import com.nguyengiap.locket.model.image_table.ImageTable;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ImageTableRepository extends JpaRepository<ImageTable, Integer> {
     @Query("SELECT h.id FROM ImageTable h WHERE h.imageUrl = :imageUrl")
-    public Integer getImageId(@Param("imageUrl") String imageUrl);
+    Integer getImageId(@Param("imageUrl") String imageUrl);
 
     @Query("SELECT h FROM ImageTable h WHERE h.id = :id")
-    public ImageTable getImageById(@Param("id") Integer id);
+    ImageTable getImageById(@Param("id") Integer id);
 
     @Query("SELECT h FROM ImageTable h WHERE h.account = :account")
-    public List<ImageTable> getImageByAccount(@Param("account") String account);
+    List<ImageTable> getImageByAccount(@Param("account") String account);
 
     @Modifying
-    @Query("DELETE FROM User u WHERE u.id = :id")
-    public void deleteImage(@Param("id") int id);
+    @Query("DELETE FROM ImageTable u WHERE u.id = :id")
+    void deleteImage(@Param("id") int id);
 
+    @Query("SELECT u FROM ImageTable u WHERE u.id = :id AND u.account = :account")
+    Optional<ImageTable> checkImageBelongAccount(@Param("id") int id, @Param("account") String account);
 }

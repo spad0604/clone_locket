@@ -1,7 +1,5 @@
 package com.nguyengiap.locket.model.history_table;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Builder
@@ -13,6 +11,8 @@ import lombok.*;
 @Table(name = "_history_table")
 public class HistoryTable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private Integer imageId;
     private String account;
     private Integer isSeen;

@@ -24,4 +24,8 @@ public class HistoryTableService {
     public List<HistoryTable> getHistoryByAccount(String account) {
         return historyTableRepository.getHistoryByAccount(account);
     }
+
+    public void saveAll(List<HistoryTable> histories) {
+        historyTableRepository.saveAll(histories);
+    }
 }
