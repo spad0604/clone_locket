@@ -4,6 +4,8 @@ import 'package:jbbase_app/features/home_page/presentation/controller/camera_pag
 import 'package:jbbase_app/features/home_page/presentation/controller/home_page_controller/home_page_controller.dart';
 import 'package:jbbase_app/features/home_page/presentation/controller/root_home_page_controller/root_home_page_controller.dart';
 
+import '../../../../authentication/domain/usecases/general/get_friend_image_list_uc.dart';
+import '../../../../authentication/domain/usecases/general/get_friend_info_uc.dart';
 import '../../../../authentication/domain/usecases/general/get_image_uc.dart';
 
 class RootHomePageBinding extends Bindings {
@@ -22,6 +24,10 @@ class RootHomePageBinding extends Bindings {
     Get.lazyPut(() => SeenImageUseCase(Get.find()));
 
     Get.lazyPut(() => GetHistoryUseCase(Get.find()));
+
+    Get.lazyPut(() => GetFriendInformationUseCase(Get.find()));
+
+    Get.lazyPut(() => GetFriendImageListUseCase(Get.find()));
   }
 
 }

@@ -1,6 +1,9 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:jbbase_app/base/base.dart';
 import 'package:jbbase_app/features/authentication/authentication.dart';
+import 'package:jbbase_app/features/authentication/domain/usecases/general/get_friend_image_list_uc.dart';
+import 'package:jbbase_app/features/authentication/domain/usecases/general/get_friend_info_uc.dart';
+import 'package:jbbase_app/features/home_page/data/model/friend_information.dart';
 import 'package:jbbase_app/features/home_page/data/model/friend_table_model.dart';
 import 'package:jbbase_app/features/home_page/data/model/history-model.dart';
 import 'package:jbbase_app/features/home_page/data/model/image_model.dart';
@@ -16,6 +19,10 @@ class HomePageController extends BaseController {
 
   final LoginController loginController = Get.find();
 
+  final GetFriendInformationUseCase getFriendInformationUseCase = Get.find();
+
+  final GetFriendImageListUseCase getFriendImageListUseCase = Get.find();
+
   Rx<String> account = ''.obs;
 
   RxList<HistoryModel> history = RxList<HistoryModel>();
@@ -26,12 +33,17 @@ class HomePageController extends BaseController {
 
   RxList<ImageModel> imageModel = RxList();
 
+  RxList<FriendInformation> listFriendInfo = RxList();
+
+  Rx<String> selectedValue = 'Tất cả bạn bè'.obs;
+
   @override
   void onInit() async {
     EasyLoading.show(status: 'Loading...');
     await getUserAccount();
     await getHistory();
     await getListFriend();
+    await getFriendInfor();
     EasyLoading.dismiss();
     super.onInit();
   }
@@ -42,13 +54,18 @@ class HomePageController extends BaseController {
 
   Future<void> getHistory() async {
     try {
-      history.value = await getHistoryUseCase.build(null);
-      if (history.isNotEmpty) {
-        for (HistoryModel historyModel in history) {
-          if (historyModel.isSeen == 0) {
-            await getImage(historyModel.imageId ?? 1);
+      imageModel.value = [];
+      if(selectedValue == 'Tất cả bạn bè') {
+        history.value = await getHistoryUseCase.build(null);
+        if (history.isNotEmpty) {
+          for (HistoryModel historyModel in history) {
+            if (historyModel.isSeen == 0) {
+              await getImage(historyModel.imageId ?? 1);
+            }
           }
         }
+      } else {
+        imageModel.value = await getFriendImageListUseCase.build(selectedValue.value);
       }
       imageModel.value = imageModel.reversed.toList();
     } catch (e) {
@@ -72,6 +89,30 @@ class HomePageController extends BaseController {
       friendList.value = [];
     }
   }
+
+  Future<void> getFriendInfor() async {
+    try {
+      listFriendInfo.value = await getFriendInformationUseCase.build(null);
+    } catch(e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  String avatarUrl(String account) {
+    if(account == 'Tất cả bạn bè') {
+      return 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group';
+    }
+    if (listFriendInfo.isNotEmpty) {
+      for (FriendInformation friendInformation in listFriendInfo) {
+        if (account == friendInformation.account) {
+          debugPrint('ola ${friendInformation.avatarUrl}');
+          return friendInformation.avatarUrl ?? '';
+        }
+      }
+    }
+    return '';
+  }
+
 
   Future<void> getImage(int id) async {
     try {

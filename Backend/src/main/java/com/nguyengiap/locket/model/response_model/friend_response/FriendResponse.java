@@ -8,6 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 public class FriendResponse {
+    private String account;
     private String firstName;
     private String lastName;
     private String avatarUrl;

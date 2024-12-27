@@ -1,4 +1,5 @@
 import 'package:jbbase_app/base/domain/base_repo.dart';
+import 'package:jbbase_app/features/home_page/data/model/friend_information.dart';
 import 'package:jbbase_app/features/home_page/data/model/friend_table_model.dart';
 import 'package:jbbase_app/features/home_page/data/model/history-model.dart';
 import 'package:jbbase_app/features/home_page/data/model/image_model.dart';
@@ -53,5 +54,15 @@ class UserRepoImpl extends UserRepo {
   @override
   Future<void> seenImage(int id) {
     return _userAPI.seenImage(id);
+  }
+
+  @override
+  Future<List<FriendInformation>> getFriendInfo() {
+    return _userAPI.getFriendInfo();
+  }
+
+  @override
+  Future<List<ImageModel>> getFriendListImage(String account) {
+    return _userAPI.getFriendListImage(account);
   }
 }

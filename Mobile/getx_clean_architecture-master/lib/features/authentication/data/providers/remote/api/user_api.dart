@@ -5,6 +5,7 @@ import 'package:jbbase_app/features/home_page/data/model/history-model.dart';
 import 'package:jbbase_app/features/home_page/data/model/image_model.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../../../../../home_page/data/model/friend_information.dart';
 import '../../../models/user_model.dart';
 
 part 'user_api.g.dart';
@@ -36,4 +37,10 @@ abstract class UserAPI {
 
   @GET('/user/get-image')
   Future<ImageModel> getImage(@Query('id') int id);
+
+  @GET('/user/friend-info')
+  Future<List<FriendInformation>> getFriendInfo();
+
+  @GET('/user/friend-list-image')
+  Future<List<ImageModel>> getFriendListImage(@Query('account') String account);
 }

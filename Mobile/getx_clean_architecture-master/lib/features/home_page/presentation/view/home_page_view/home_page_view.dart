@@ -2,8 +2,12 @@ import 'package:jbbase_app/base/base.dart';
 import 'package:jbbase_app/features/home_page/presentation/controller/home_page_controller/home_page_controller.dart';
 import 'package:jbbase_app/features/home_page/presentation/controller/root_home_page_controller/root_home_page_controller.dart';
 
+import '../../../../authentication/presentation/controllers/login/login_controller.dart';
+
 class HomePageView extends BaseGetView<HomePageController> {
   final rootHomePageController = Get.find<RootHomePageController>();
+
+  final loginController = Get.find<LoginController>();
 
   @override
   Widget myBuild(BuildContext context) {
@@ -14,23 +18,34 @@ class HomePageView extends BaseGetView<HomePageController> {
         child: Stack(
           children: [
             Positioned.fill(
-              child: PageView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: controller.imageModel.length,
-                itemBuilder: (context, index) {
-                  return controller.imageModel.isNotEmpty
-                      ? BuildImage(
-                          imageUrl: controller.imageModel[index].imageUrl ??
-                              'https://cdn-icons-png.flaticon.com/512/10278/10278187.png',
-                          userName:
-                              controller.imageModel[index].account ?? 'User',
-                          userAvatar: null,
-                        )
-                      : SizedBox(
-                          height: Get.width,
-                          width: Get.width,
-                        );
-                },
+              child: Obx(
+        () => PageView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: controller.imageModel.length,
+                  itemBuilder: (context, index) {
+                    return controller.imageModel.isNotEmpty
+                        ? BuildImage(
+                            imageUrl: controller.imageModel[index].imageUrl ??
+                                'https://cdn-icons-png.flaticon.com/512/10278/10278187.png',
+                            userName: controller.imageModel[index].account ==
+                                    loginController
+                                        .emailTextEditingController.text
+                                ? 'Bạn'
+                                : (controller.imageModel[index].account ??
+                                    'User'),
+                            userAvatar: controller.imageModel[index].account ==
+                                    loginController
+                                        .emailTextEditingController.text
+                                ? null
+                                : controller.avatarUrl(
+                                    controller.imageModel[index].account ?? ''),
+                          )
+                        : SizedBox(
+                            height: Get.width,
+                            width: Get.width,
+                          );
+                  },
+                ),
               ),
             ),
             Positioned.fill(
@@ -127,7 +142,10 @@ class BuildImage extends StatelessWidget {
   final String? userAvatar;
   final String userName;
 
-  const BuildImage({required this.imageUrl, required this.userAvatar, required this.userName});
+  const BuildImage(
+      {required this.imageUrl,
+      required this.userAvatar,
+      required this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -166,14 +184,16 @@ class BuildImage extends StatelessWidget {
                       width: 2,
                     ),
                   ),
-                  child: userAvatar != null ? ClipOval(
-                    child: Image.network(
-                      imageUrl,
-                      width: 30,
-                      height: 30,
-                      fit: BoxFit.cover,
-                    ),
-                  ) : const SizedBox(),
+                  child: userAvatar != null
+                      ? ClipOval(
+                          child: Image.network(
+                            userAvatar ?? '',
+                            width: 30,
+                            height: 30,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : const SizedBox(),
                 ),
                 const SizedBox(
                   width: 5,
@@ -248,16 +268,71 @@ class _CustomDropdownState extends State<CustomDropdown> {
             value: selectedValue,
             items: controller.listFriend
                 .map((item) => DropdownMenuItem(
-                    value: item,
-                    child: Text(
-                      item,
-                      style: const TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    )))
+                      value: item,
+                      child: selectedValue == item
+                          ? Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(30),
+                                  child: Image.network(
+                                    controller.avatarUrl(item),
+                                    width: 30,
+                                    height: 30,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Center(
+                                  child: Text(
+                                    item,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(30),
+                                      child: Image.network(
+                                        controller.avatarUrl(item),
+                                        width: 30,
+                                        height: 30,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text(
+                                      item,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                              ],
+                            ),
+                    ))
                 .toList(),
             onChanged: (value) {
               setState(() {
                 selectedValue = value!;
+                controller.selectedValue.value = value;
+                controller.getHistory();
               });
             },
             icon: const Icon(Icons.keyboard_arrow_down_outlined,

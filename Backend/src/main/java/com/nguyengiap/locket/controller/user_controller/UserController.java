@@ -105,6 +105,7 @@ public class UserController {
             if(!listFriendInfo.isEmpty()) {
                 for(User user : listFriendInfo) {
                     FriendResponse friendResponse = FriendResponse.builder()
+                            .account(user.getAccount())
                             .firstName(user.getFirstName())
                             .lastName(user.getLastName())
                             .avatarUrl(user.getAvatarUrl())

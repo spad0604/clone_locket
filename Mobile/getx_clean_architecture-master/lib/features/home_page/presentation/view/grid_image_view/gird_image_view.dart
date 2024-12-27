@@ -42,23 +42,25 @@ class GridImageView extends BaseGetView<GridImageController> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(5),
-                    child: GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3, // Số cột trong lưới
-                        crossAxisSpacing: 8, // Khoảng cách ngang giữa các mục
-                        mainAxisSpacing: 8, // Khoảng cách dọc giữa các mục
-                        childAspectRatio: 1, // Tỷ lệ khung hình (hình vuông)
+                    child: Obx(
+                      () => GridView.builder(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3, // Số cột trong lưới
+                          crossAxisSpacing: 8, // Khoảng cách ngang giữa các mục
+                          mainAxisSpacing: 8, // Khoảng cách dọc giữa các mục
+                          childAspectRatio: 1, // Tỷ lệ khung hình (hình vuông)
+                        ),
+                        itemBuilder: (context, index) {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.network(
+                              homePageController.imageModel[index].imageUrl ?? '',
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        },
+                        itemCount: homePageController.imageModel.length,
                       ),
-                      itemBuilder: (context, index) {
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.network(
-                            homePageController.imageModel[index].imageUrl ?? '',
-                            fit: BoxFit.cover,
-                          ),
-                        );
-                      },
-                      itemCount: homePageController.imageModel.length,
                     ),
                   ),
                 )
