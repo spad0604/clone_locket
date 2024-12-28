@@ -1,4 +1,4 @@
-// import 'package:camera/camera.dart';
+import 'package:camera/camera.dart';
 import 'package:jbbase_app/base/base.dart';
 import 'package:jbbase_app/features/home_page/presentation/controller/camera_page_controller/camera_page_controller.dart';
 
@@ -33,34 +33,57 @@ class CameraPageView extends BaseGetView<CameraPageController> {
                 ),
               ),
               Center(
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(60),
-                      child: Container(
-                        height: Get.width,
-                        width: double.infinity,
-                        // child: controller.isCameraInitialized.value == true
-                        //     ? CameraPreview(controller.cameraController)
-                        child: SizedBox(
-                                width: double.infinity,
-                                height: Get.width,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(60),
+                  child: Obx(
+                    () => SizedBox(
+                      height: Get.width,
+                      width: Get.width,
+                      child: controller.isCameraInitialized.value
+                          ? Transform.scale(
+                        scale: 1.0,
+                        child: AspectRatio(
+                          aspectRatio: controller.cameraController.value.aspectRatio,
+                          child: OverflowBox(
+                            alignment: Alignment.center,
+                            child: FittedBox(
+                              fit: BoxFit.cover,
+                              child: SizedBox(
+                                width: Get.size.width,
+                                height: Get.size.width / controller.cameraController.value.aspectRatio,
+                                child: Stack(children: [CameraPreview(controller.cameraController)]),
                               ),
-                      ))),
+                            ),
+                          ),
+                        ),
+                      )
+                      : SizedBox(
+                              width: Get.width,
+                              height: Get.width,
+                            ),
+                    ),
+                  ),
+                ),
+              ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  _listService(capture: null, flash: null, switchCamera: null),
+                  _listService(
+                      capture: controller.takePicture,
+                      flash: controller.toggleFlash,
+                      switchCamera: controller.switchCamera),
                   const SizedBox(
                     height: 15,
                   ),
-                  Text(
+                  const Text(
                     'Lịch sử',
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
-                  Icon(
+                  const Icon(
                     Icons.keyboard_arrow_down,
                     color: Colors.white,
                     size: 40,
@@ -85,18 +108,26 @@ class CameraPageView extends BaseGetView<CameraPageController> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         GestureDetector(
-            onTap: () {
-              flash!.call();
+            onTap: () async {
+              await flash!.call();
             },
-            child: Assets.images.flashOnIc.image(
-              height: 40,
-              width: 40,
-              color: Colors.white,
+            child: Obx(
+              () => controller.isFlashOn.value == true
+                  ? Assets.images.flashOnIc.image(
+                      height: 40,
+                      width: 40,
+                      color: Colors.white,
+                    )
+                  : Assets.images.flashOffIc.image(
+                      height: 40,
+                      width: 40,
+                      color: Colors.white,
+                    ),
             )),
-        CircleCapture(),
+        CircleCapture(capture: () async{ await capture!.call();},),
         GestureDetector(
-          onTap: () {
-            switchCamera!.call();
+          onTap: () async {
+            await switchCamera!.call();
           },
           child: Assets.images.cameraIc.image(
             height: 40,
@@ -110,33 +141,40 @@ class CameraPageView extends BaseGetView<CameraPageController> {
 }
 
 class CircleCapture extends StatelessWidget {
-  const CircleCapture({super.key});
+  final Function()? capture;
+
+  const CircleCapture({super.key, this.capture});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 80,
-        width: 80,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(40),
-            color: ColorName.yellow5b9),
-        child: Center(
-          child: Container(
-            width: 70,
-            height: 70,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(35),
-                color: ColorName.blackBgr),
-            child: Center(
-              child: Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Colors.white),
+    return GestureDetector(
+      onTap: () async {
+        await capture!.call();
+      },
+      child: Container(
+          height: 100,
+          width: 100,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: ColorName.yellow5b9),
+          child: Center(
+            child: Container(
+              width: 90,
+              height: 90,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(45),
+                  color: ColorName.blackBgr),
+              child: Center(
+                child: Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      color: Colors.white),
+                ),
               ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 }
