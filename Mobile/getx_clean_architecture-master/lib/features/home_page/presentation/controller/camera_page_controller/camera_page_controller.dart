@@ -1,9 +1,16 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:jbbase_app/base/base.dart';
+import 'package:jbbase_app/features/authentication/domain/usecases/general/upload_image_uc.dart';
+import 'package:jbbase_app/features/home_page/presentation/controller/home_page_controller/home_page_controller.dart';
 import 'package:path_provider/path_provider.dart';
 
 class CameraPageController extends BaseController {
+  final UploadImageUseCase uploadImageUseCase = Get.find();
+
+  final HomePageController homePageController = Get.find();
+
   late CameraController cameraController;
   late List<CameraDescription> cameras;
   RxBool isCameraInitialized = false.obs;
@@ -89,12 +96,22 @@ class CameraPageController extends BaseController {
       final String filePath = '${directory.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
 
       final XFile picture = await cameraController.takePicture();
-      await picture.saveTo(filePath);
-      print('Picture saved to $filePath');
+      final file = File(picture.path);
 
+      final compressedImage = await FlutterImageCompress.compressAndGetFile(
+        file.path,
+        filePath,
+        quality: 100,
+      );
+
+      File imageFile = File(compressedImage!.path);
+      await uploadImageUseCase.build(imageFile);
+
+      await homePageController.getHistory();
       await cameraController.setFlashMode(FlashMode.off);
     } catch (e) {
       print('Error taking picture: $e');
     }
   }
+
 }

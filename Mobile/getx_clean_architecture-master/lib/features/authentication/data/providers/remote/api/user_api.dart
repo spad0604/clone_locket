@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:dio/dio.dart';
 import 'package:jbbase_app/features/home_page/data/model/friend_table_model.dart';
@@ -43,4 +45,8 @@ abstract class UserAPI {
 
   @GET('/user/friend-list-image')
   Future<List<ImageModel>> getFriendListImage(@Query('account') String account);
+
+  @POST('/upload')
+  @MultiPart()
+  Future<void> uploadImage(@Part(name: 'file') File file);
 }

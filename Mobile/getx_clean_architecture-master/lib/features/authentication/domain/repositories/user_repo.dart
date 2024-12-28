@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:jbbase_app/base/domain/base_repo.dart';
@@ -31,4 +32,6 @@ abstract class UserRepo extends BaseHiveRepo<User, UserModel, UserStorage> {
   Future<List<FriendInformation>> getFriendInfo();
 
   Future<List<ImageModel>> getFriendListImage(String account);
+
+  Future<void> uploadImage(File file);
 }

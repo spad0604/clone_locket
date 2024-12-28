@@ -47,11 +47,11 @@ class CameraPageView extends BaseGetView<CameraPageController> {
                           child: OverflowBox(
                             alignment: Alignment.center,
                             child: FittedBox(
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fitWidth,
                               child: SizedBox(
                                 width: Get.size.width,
-                                height: Get.size.width / controller.cameraController.value.aspectRatio,
-                                child: Stack(children: [CameraPreview(controller.cameraController)]),
+                                height: Get.size.width * controller.cameraController.value.aspectRatio,
+                                child: CameraPreview(controller.cameraController),
                               ),
                             ),
                           ),
