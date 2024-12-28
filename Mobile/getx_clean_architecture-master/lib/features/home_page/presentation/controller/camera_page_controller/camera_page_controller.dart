@@ -6,16 +6,26 @@ import 'package:jbbase_app/features/authentication/domain/usecases/general/uploa
 import 'package:jbbase_app/features/home_page/presentation/controller/home_page_controller/home_page_controller.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../../authentication/data/providers/remote/api/user_api.dart';
+
 class CameraPageController extends BaseController {
   final UploadImageUseCase uploadImageUseCase = Get.find();
 
   final HomePageController homePageController = Get.find();
+
+  TextEditingController message = TextEditingController();
 
   late CameraController cameraController;
   late List<CameraDescription> cameras;
   RxBool isCameraInitialized = false.obs;
   RxBool isFlashOn = false.obs;
   int selectedCameraIndex = 0;
+
+  RxBool isSending = false.obs;
+
+  RxString imagePath = ''.obs;
+
+  RxBool isCapture = false.obs;
 
   @override
   void onInit() async {
@@ -54,7 +64,8 @@ class CameraPageController extends BaseController {
       }).toList();
 
       if (filteredCameras.length > 1) {
-        selectedCameraIndex = (selectedCameraIndex + 1) % filteredCameras.length;
+        selectedCameraIndex =
+            (selectedCameraIndex + 1) % filteredCameras.length;
 
         await cameraController.dispose();
 
@@ -77,13 +88,13 @@ class CameraPageController extends BaseController {
     }
   }
 
-
   void toggleFlash() {
     isFlashOn.value = !isFlashOn.value;
   }
 
   Future<void> takePicture() async {
-    if (!cameraController.value.isInitialized || cameraController.value.isTakingPicture) return;
+    if (!cameraController.value.isInitialized ||
+        cameraController.value.isTakingPicture) return;
 
     try {
       if (isFlashOn.value) {
@@ -93,7 +104,8 @@ class CameraPageController extends BaseController {
       }
 
       final Directory directory = await getApplicationDocumentsDirectory();
-      final String filePath = '${directory.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final String filePath =
+          '${directory.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
 
       final XFile picture = await cameraController.takePicture();
       final file = File(picture.path);
@@ -104,14 +116,29 @@ class CameraPageController extends BaseController {
         quality: 100,
       );
 
-      File imageFile = File(compressedImage!.path);
-      await uploadImageUseCase.build(imageFile);
+      imagePath.value = compressedImage!.path;
 
-      await homePageController.getHistory();
       await cameraController.setFlashMode(FlashMode.off);
+
+      isCapture.value = true;
     } catch (e) {
       print('Error taking picture: $e');
     }
   }
 
+  Future<void> uploadImage() async {
+    isSending.value = true;
+    final imageFile = File(imagePath.value);
+
+    final messageUpload = UploadImageMessage(message: message.text);
+    final UploadImageRequest request =
+    UploadImageRequest(file: imageFile, message: messageUpload);
+    await uploadImageUseCase.build(request);
+
+    await homePageController.getHistory();
+
+    isCapture.value = false;
+
+    isSending.value = false;
+  }
 }

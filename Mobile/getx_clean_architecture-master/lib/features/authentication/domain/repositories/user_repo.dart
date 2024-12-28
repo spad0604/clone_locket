@@ -6,9 +6,11 @@ import 'package:jbbase_app/features/home_page/data/model/friend_information.dart
 import 'package:jbbase_app/features/home_page/data/model/friend_table_model.dart';
 import 'package:jbbase_app/features/home_page/data/model/history-model.dart';
 import 'package:jbbase_app/features/home_page/data/model/image_model.dart';
+import 'package:jbbase_app/features/home_page/data/model/response_status.dart';
 
 import '../../data/models/user_model.dart';
 import '../../data/providers/local/user_storage.dart';
+import '../../data/providers/remote/api/user_api.dart';
 import '../entities/user.dart';
 
 export '../../data/models/user_model.dart';
@@ -33,5 +35,7 @@ abstract class UserRepo extends BaseHiveRepo<User, UserModel, UserStorage> {
 
   Future<List<ImageModel>> getFriendListImage(String account);
 
-  Future<void> uploadImage(File file);
+  Future<StatusResponse> uploadImage(File file);
+
+  Future<void> uploadImageMessage(UploadImageMessage request);
 }

@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.nguyengiap.locket.model.friend_table.FriendTable;
 import com.nguyengiap.locket.model.image_table.ImageTable;
+import com.nguyengiap.locket.model.request_model.image_message.ImageMessageRequest;
 import com.nguyengiap.locket.model.response_model.friend_response.FriendResponse;
 import com.nguyengiap.locket.model.user.User;
 import com.nguyengiap.locket.service.friend_table_service.FriendTableService;
@@ -13,11 +14,7 @@ import com.nguyengiap.locket.service.image_table_service.ImageTableService;
 import com.nguyengiap.locket.service.user_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.nguyengiap.locket.config.jwt_config.JwtService;
 import com.nguyengiap.locket.model.history_table.HistoryTable;
@@ -44,6 +41,25 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @PostMapping("/image-message")
+    public ResponseEntity<?> uploadImageMessage(@RequestHeader("Authorization") String token, @RequestBody() ImageMessageRequest request) {
+        try {
+            String user = jwtService.extractUserName(token.substring(7));
+
+            Optional<ImageTable> imageTableOptinal = imageTableService.checkImageBelongAccount(request.getId(), user);
+
+            if(imageTableOptinal.isPresent()) {
+                imageTableService.updateMessageImage(request.getId(), request.getMessage());
+
+                return ResponseEntity.ok().body(StatusResponseModel.builder().statusCode(200).message("Update Message Successfull").build());
+            } else {
+                return ResponseEntity.badRequest().body(StatusResponseModel.builder().statusCode(404).message("This is not your imagee").build());
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(StatusResponseModel.builder().statusCode(403).message(e.toString()).build());
+        }
+    }
 
     @GetMapping("/list-friend")
     public ResponseEntity<?> getListFriend(@RequestHeader("Authorization") String token) {

@@ -5,6 +5,7 @@ import 'package:jbbase_app/features/home_page/data/model/friend_information.dart
 import 'package:jbbase_app/features/home_page/data/model/friend_table_model.dart';
 import 'package:jbbase_app/features/home_page/data/model/history-model.dart';
 import 'package:jbbase_app/features/home_page/data/model/image_model.dart';
+import 'package:jbbase_app/features/home_page/data/model/response_status.dart';
 
 import '../../domain/repositories/user_repo.dart';
 import '../providers/remote/api/user_api.dart';
@@ -69,7 +70,12 @@ class UserRepoImpl extends UserRepo {
   }
 
   @override
-  Future<void> uploadImage(File file) {
+  Future<StatusResponse> uploadImage(File file) {
     return _userAPI.uploadImage(file);
+  }
+
+  @override
+  Future<void> uploadImageMessage(UploadImageMessage request) {
+    return _userAPI.uploadImageMessage(request);
   }
 }

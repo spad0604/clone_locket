@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:jbbase_app/features/home_page/data/model/friend_table_model.dart';
 import 'package:jbbase_app/features/home_page/data/model/history-model.dart';
 import 'package:jbbase_app/features/home_page/data/model/image_model.dart';
+import 'package:jbbase_app/features/home_page/data/model/response_status.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../../../../home_page/data/model/friend_information.dart';
@@ -48,5 +49,22 @@ abstract class UserAPI {
 
   @POST('/upload')
   @MultiPart()
-  Future<void> uploadImage(@Part(name: 'file') File file);
+  Future<StatusResponse> uploadImage(@Part(name: 'file') File file);
+  
+  @POST("/user/image-message")
+  Future<void> uploadImageMessage(@Body() UploadImageMessage request);
+}
+
+class UploadImageMessage {
+  final int id;
+  final String? message;
+
+  UploadImageMessage({required this.id, required this.message});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'message': message,
+    };
+  }
 }

@@ -37,4 +37,8 @@ public class ImageTableService{
     public Optional<ImageTable> checkImageBelongAccount(int id, String account) {
         return imageTableRepository.checkImageBelongAccount(id, account);
     }
+
+    public void updateMessageImage(Integer id, String message) {
+        imageTableRepository.setMessageImage(id, message);
+    }
 }

@@ -7,11 +7,7 @@ import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nguyengiap.locket.config.jwt_config.JwtService;
@@ -47,7 +43,7 @@ public class CloudinaryController {
 
     @PostMapping
     public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file,
-            @RequestHeader("Authorization") String token) {
+                                         @RequestHeader("Authorization") String token) {
         try {
             LocalDateTime now = LocalDateTime.now();
             // Get account from token
@@ -60,6 +56,7 @@ public class CloudinaryController {
                     .account(account)
                     .imageUrl(url)
                     .dateTime(now)
+                    .message("")
                     .build();
             imageTableService.save(imageTable);
 
@@ -70,26 +67,38 @@ public class CloudinaryController {
             if (!friendList.isEmpty()) {
                 List<HistoryTable> histories = new ArrayList<>();
                 for (FriendTable friend : friendList) {
+                    if(!Objects.equals(friend.getAccount1(), account)) {
                         HistoryTable historyTable = HistoryTable.builder()
                                 .account(friend.getAccount1())
                                 .imageId(imageId)
                                 .isSeen(0)
                                 .build();
                         histories.add(historyTable);
-
-                        HistoryTable historyTable2 = HistoryTable.builder()
+                    } else {
+                        HistoryTable historyTable = HistoryTable.builder()
                                 .account(friend.getAccount2())
                                 .imageId(imageId)
                                 .isSeen(0)
                                 .build();
-                        histories.add(historyTable2);
+                        histories.add(historyTable);
+                    }
                 }
+
+                HistoryTable historyTable2 = HistoryTable.builder()
+                                .account(account)
+                                        .imageId(imageId)
+                                                .isSeen(0)
+                                                        .build();
+                histories.add(historyTable2);
+
                 historyTableService.saveAll(histories);
             }
 
+            Integer id = imageTableService.getImageId(url);
+
             imageTableService.save(imageTable);
             return ResponseEntity.ok()
-                    .body(StatusResponseModel.builder().statusCode(200).message("Upload Successful").build());
+                    .body(StatusResponseModel.builder().statusCode(200).message(id.toString()).build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error uploading file: " + e.getMessage());
         }
