@@ -14,7 +14,7 @@ class CameraPageView extends BaseGetView<CameraPageController> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: SizedBox(
-            height: Get.size.height,
+            height: Get.size.height -  MediaQuery.of(context).padding.vertical,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -6,6 +6,7 @@ import 'package:jbbase_app/features/home_page/presentation/controller/root_home_
 
 import '../../../../authentication/domain/usecases/general/get_friend_image_list_uc.dart';
 import '../../../../authentication/domain/usecases/general/get_friend_info_uc.dart';
+import '../../../../authentication/domain/usecases/general/upload_image_message_uc.dart';
 
 class RootHomePageBinding extends Bindings {
   @override
@@ -31,6 +32,8 @@ class RootHomePageBinding extends Bindings {
     Get.lazyPut(() => GetImageUseCase(Get.find()));
 
     Get.lazyPut(() => UploadImageUseCase(Get.find()));
+
+    Get.lazyPut(() => UploadImageMessageUseCase(Get.find()));
   }
 
 }

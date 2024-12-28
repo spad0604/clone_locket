@@ -8,12 +8,14 @@ class ImageModel {
     final String? imageUrl;
     final String? account;
     final String? dateTime;
+    final String? message;
 
     ImageModel({
         this.id,
         this.imageUrl,
         this.account,
         this.dateTime,
+        this.message
     });
 
     ImageModel copyWith({
@@ -21,11 +23,13 @@ class ImageModel {
         String? imageUrl,
         String? account,
         String? dateTime,
+        String? message
     }) => 
         ImageModel(
             id: id ?? this.id,
             imageUrl: imageUrl ?? this.imageUrl,
             account: account ?? this.account,
             dateTime: dateTime ?? this.dateTime,
+            message: message ?? this.message
         );
 }

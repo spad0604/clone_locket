@@ -39,6 +39,7 @@ class HomePageView extends BaseGetView<HomePageController> {
                                 ? null
                                 : controller.avatarUrl(
                                     controller.imageModel[index].account ?? ''),
+                            message: controller.imageModel[index].message ?? '',
                           )
                         : SizedBox(
                             height: Get.width,
@@ -141,11 +142,13 @@ class BuildImage extends StatelessWidget {
   final String imageUrl;
   final String? userAvatar;
   final String userName;
+  final String? message;
 
   const BuildImage(
       {required this.imageUrl,
       required this.userAvatar,
-      required this.userName});
+      required this.userName,
+      required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -163,9 +166,37 @@ class BuildImage extends StatelessWidget {
             child: SizedBox(
                 height: Get.width,
                 width: double.infinity,
-                child: Image.network(
-                  imageUrl,
-                  fit: BoxFit.cover,
+                child: Stack(
+                  children: [
+                    Image.network(
+                      imageUrl,
+                      fit: BoxFit.cover,
+                      width: Get.width,
+                    ),
+                    message != '' ? Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            bottom: 15.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: ColorName.gray343.withOpacity(0.75),
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                          child: Text(
+                            message ?? '',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
+
+                      ),
+                    ) : const SizedBox(),
+                  ],
                 )),
           )),
           const SizedBox(

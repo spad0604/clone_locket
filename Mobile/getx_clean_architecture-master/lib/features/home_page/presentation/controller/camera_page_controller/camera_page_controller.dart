@@ -2,16 +2,19 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:jbbase_app/base/base.dart';
+import 'package:jbbase_app/features/authentication/authentication.dart';
+import 'package:jbbase_app/features/authentication/domain/usecases/general/upload_image_message_uc.dart';
 import 'package:jbbase_app/features/authentication/domain/usecases/general/upload_image_uc.dart';
+import 'package:jbbase_app/features/home_page/data/model/response_status.dart';
 import 'package:jbbase_app/features/home_page/presentation/controller/home_page_controller/home_page_controller.dart';
 import 'package:path_provider/path_provider.dart';
-
-import '../../../../authentication/data/providers/remote/api/user_api.dart';
 
 class CameraPageController extends BaseController {
   final UploadImageUseCase uploadImageUseCase = Get.find();
 
   final HomePageController homePageController = Get.find();
+
+  final UploadImageMessageUseCase uploadImageMessageUseCase = Get.find();
 
   TextEditingController message = TextEditingController();
 
@@ -26,6 +29,8 @@ class CameraPageController extends BaseController {
   RxString imagePath = ''.obs;
 
   RxBool isCapture = false.obs;
+
+  Rxn<StatusResponse> uploadStatusResponse = Rxn();
 
   @override
   void onInit() async {
@@ -130,10 +135,13 @@ class CameraPageController extends BaseController {
     isSending.value = true;
     final imageFile = File(imagePath.value);
 
-    final messageUpload = UploadImageMessage(message: message.text);
-    final UploadImageRequest request =
-    UploadImageRequest(file: imageFile, message: messageUpload);
-    await uploadImageUseCase.build(request);
+    uploadStatusResponse.value = await uploadImageUseCase.build(imageFile);
+
+    final request = UploadImageMessage(
+        id: int.parse(uploadStatusResponse.value!.message ?? '1'),
+        message: message.text);
+
+    await uploadImageMessageUseCase.build(request);
 
     await homePageController.getHistory();
 
