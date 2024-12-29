@@ -89,7 +89,7 @@ class HomePageView extends BaseGetView<HomePageController> {
                       children: [
                         circleAvatar(
                           url:
-                              'https://avatars.githubusercontent.com/u/179314473?v=4',
+                              rootHomePageController.user.value!.avatarUrl ?? '',
                           isOnline: true,
                         ),
                         CustomDropdown(),

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:dio/dio.dart';
+import 'package:jbbase_app/features/authentication/data/models/user_information.dart';
 import 'package:jbbase_app/features/home_page/data/model/friend_table_model.dart';
 import 'package:jbbase_app/features/home_page/data/model/history-model.dart';
 import 'package:jbbase_app/features/home_page/data/model/image_model.dart';
@@ -53,6 +54,9 @@ abstract class UserAPI {
   
   @POST("/user/image-message")
   Future<void> uploadImageMessage(@Body() UploadImageMessage request);
+  
+  @GET('/user/information')
+  Future<UserInformation> getInformation();
 }
 
 class UploadImageMessage {

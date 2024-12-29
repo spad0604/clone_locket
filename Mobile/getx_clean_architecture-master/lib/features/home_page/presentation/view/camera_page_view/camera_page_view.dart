@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:jbbase_app/base/base.dart';
 import 'package:jbbase_app/features/home_page/presentation/controller/camera_page_controller/camera_page_controller.dart';
+import 'package:jbbase_app/features/home_page/presentation/controller/root_home_page_controller/root_home_page_controller.dart';
 
 import '../home_page_view/home_page_view.dart';
 
 class CameraPageView extends BaseGetView<CameraPageController> {
+  final rootPageController = Get.find<RootHomePageController>();
+
   @override
   Widget myBuild(BuildContext context) {
     return Scaffold(
@@ -28,7 +31,7 @@ class CameraPageView extends BaseGetView<CameraPageController> {
                       children: [
                         circleAvatar(
                             url:
-                                'https://avatars.githubusercontent.com/u/179314473?v=4',
+                                rootPageController.user.value!.avatarUrl ?? '',
                             isOnline: true),
                         controller.isCapture.value == false
                             ? CustomDropdown()

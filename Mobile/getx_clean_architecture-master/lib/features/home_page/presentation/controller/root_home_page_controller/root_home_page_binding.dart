@@ -1,4 +1,5 @@
 import 'package:jbbase_app/features/authentication/authentication.dart';
+import 'package:jbbase_app/features/authentication/domain/usecases/general/get_information_uc.dart';
 import 'package:jbbase_app/features/authentication/domain/usecases/general/upload_image_uc.dart';
 import 'package:jbbase_app/features/home_page/presentation/controller/camera_page_controller/camera_page_controller.dart';
 import 'package:jbbase_app/features/home_page/presentation/controller/home_page_controller/home_page_controller.dart';
@@ -34,6 +35,7 @@ class RootHomePageBinding extends Bindings {
     Get.lazyPut(() => UploadImageUseCase(Get.find()));
 
     Get.lazyPut(() => UploadImageMessageUseCase(Get.find()));
-  }
 
+    Get.lazyPut(() => GetInformationUseCase(Get.find()));
+  }
 }

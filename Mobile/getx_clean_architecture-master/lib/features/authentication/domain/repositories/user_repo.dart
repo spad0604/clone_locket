@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:jbbase_app/base/domain/base_repo.dart';
+import 'package:jbbase_app/features/authentication/data/models/user_information.dart';
 import 'package:jbbase_app/features/home_page/data/model/friend_information.dart';
 import 'package:jbbase_app/features/home_page/data/model/friend_table_model.dart';
 import 'package:jbbase_app/features/home_page/data/model/history-model.dart';
@@ -38,4 +39,6 @@ abstract class UserRepo extends BaseHiveRepo<User, UserModel, UserStorage> {
   Future<StatusResponse> uploadImage(File file);
 
   Future<void> uploadImageMessage(UploadImageMessage request);
+
+  Future<UserInformation> getInformation();
 }

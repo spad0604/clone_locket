@@ -61,6 +61,22 @@ public class UserController {
         }
     }
 
+    @GetMapping("/information")
+    public ResponseEntity<?> checkProfile(@RequestHeader("Authorization") String token) {
+        try {
+            final String account = jwtService.extractUserName(token.substring(7));
+            Optional<User> user = userService.findByAccount(account);
+
+            if(user.isPresent()) {
+                return ResponseEntity.ok().body(user);
+            } else {
+                return ResponseEntity.status(404).body(StatusResponseModel.builder().statusCode(404).message("Account not found"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @GetMapping("/list-friend")
     public ResponseEntity<?> getListFriend(@RequestHeader("Authorization") String token) {
         try {

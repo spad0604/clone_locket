@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:jbbase_app/base/domain/base_repo.dart';
+import 'package:jbbase_app/features/authentication/data/models/user_information.dart';
 import 'package:jbbase_app/features/home_page/data/model/friend_information.dart';
 import 'package:jbbase_app/features/home_page/data/model/friend_table_model.dart';
 import 'package:jbbase_app/features/home_page/data/model/history-model.dart';
@@ -77,5 +78,10 @@ class UserRepoImpl extends UserRepo {
   @override
   Future<void> uploadImageMessage(UploadImageMessage request) {
     return _userAPI.uploadImageMessage(request);
+  }
+
+  @override
+  Future<UserInformation> getInformation() {
+    return _userAPI.getInformation();
   }
 }
