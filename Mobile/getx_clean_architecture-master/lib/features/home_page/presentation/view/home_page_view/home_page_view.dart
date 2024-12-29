@@ -3,6 +3,7 @@ import 'package:jbbase_app/features/home_page/presentation/controller/home_page_
 import 'package:jbbase_app/features/home_page/presentation/controller/root_home_page_controller/root_home_page_controller.dart';
 
 import '../../../../authentication/presentation/controllers/login/login_controller.dart';
+import '../camera_page_view/camera_page_view.dart';
 
 class HomePageView extends BaseGetView<HomePageController> {
   final rootHomePageController = Get.find<RootHomePageController>();
@@ -33,18 +34,8 @@ class HomePageView extends BaseGetView<HomePageController> {
                     });
                     return controller.imageModel.isNotEmpty
                         ? Hero(
-                            flightShuttleBuilder: (flightContext,
-                                animation,
-                                flightDirection,
-                                fromHeroContext,
-                                toHeroContext) {
-                              return FadeTransition(
-                                opacity: animation.drive(
-                                  Tween<double>(begin: 0.5, end: 1.0).chain(
-                                      CurveTween(curve: Curves.easeInOut)),
-                                ),
-                                child: toHeroContext.widget,
-                              );
+                            createRectTween: (Rect? begin, Rect? end) {
+                              return LinearRectTween(begin: begin, end: end);
                             },
                             tag: controller.imageModel[index].imageUrl!,
                             child: BuildImage(
@@ -88,8 +79,8 @@ class HomePageView extends BaseGetView<HomePageController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         circleAvatar(
-                          url:
-                              rootHomePageController.user.value!.avatarUrl ?? '',
+                          url: rootHomePageController.user.value!.avatarUrl ??
+                              '',
                           isOnline: true,
                         ),
                         CustomDropdown(),
@@ -173,7 +164,7 @@ class HomePageView extends BaseGetView<HomePageController> {
                                 color: Colors.white,
                               ),
                             ),
-                            CircleCapture(
+                            SmallCircleCapture(
                               onTapCapture:
                                   rootHomePageController.jumpToFirstPage,
                             ),
@@ -277,7 +268,7 @@ class BuildImage extends StatelessWidget {
                   child: userAvatar != null
                       ? ClipOval(
                           child: Image.network(
-                            userAvatar ?? '',
+                            userAvatar ?? 'https://avatars.githubusercontent.com/u/179314473?v=4',
                             width: 30,
                             height: 30,
                             fit: BoxFit.cover,
@@ -347,92 +338,105 @@ class _CustomDropdownState extends State<CustomDropdown> {
 
     return Center(
       child: Container(
-        height: 40,
+        height: 45,
         decoration: BoxDecoration(
           color: ColorName.gray343,
           borderRadius: BorderRadius.circular(25),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            value: selectedValue,
-            items: controller.listFriend
-                .map((item) => DropdownMenuItem(
-                      value: item,
-                      child: selectedValue == item
-                          ? Row(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(30),
-                                  child: Image.network(
-                                    controller.avatarUrl(item),
-                                    width: 30,
-                                    height: 30,
+        child: Obx(
+          () => DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: selectedValue,
+              items: controller.listFriend
+                  .map((item) => DropdownMenuItem(
+                        value: item,
+                        child: selectedValue == item
+                            ? Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(30),
+                                    child: item != 'Tất cả bạn bè'
+                                        ? Image.network(
+                                            controller.avatarUrl(item),
+                                            width: 30,
+                                            height: 30,
+                                          )
+                                        : Assets.images.friendsIc.image(
+                                            width: 30,
+                                            height: 30,
+                                            color: Colors.white),
                                   ),
-                                ),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Center(
-                                  child: Text(
-                                    item,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  const SizedBox(
+                                    width: 15,
                                   ),
-                                ),
-                              ],
-                            )
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(30),
-                                      child: Image.network(
-                                        controller.avatarUrl(item),
-                                        width: 30,
-                                        height: 30,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 15,
-                                    ),
-                                    Text(
+                                  Center(
+                                    child: Text(
                                       item,
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                  ],
-                                ),
-                                const Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
-                              ],
-                            ),
-                    ))
-                .toList(),
-            onChanged: (value) {
-              setState(() {
-                selectedValue = value!;
-                controller.selectedValue.value = value;
-                controller.getHistory();
-              });
-            },
-            icon: const Icon(Icons.keyboard_arrow_down_outlined,
-                color: Colors.white),
-            dropdownColor: ColorName.gray343,
-            style: const TextStyle(color: Colors.white, fontSize: 16),
-            alignment: Alignment.centerLeft,
-            isDense: true,
-            menuMaxHeight: 200,
-            borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ],
+                              )
+                            : Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(30),
+                                        child: item != 'Tất cả bạn bè'
+                                            ? Image.network(
+                                                controller.avatarUrl(item),
+                                                width: 30,
+                                                height: 30,
+                                              )
+                                            : Assets.images.friendsIc.image(
+                                                width: 30,
+                                                height: 30,
+                                                color: Colors.white),
+                                      ),
+                                      const SizedBox(
+                                        width: 15,
+                                      ),
+                                      Text(
+                                        item,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                ],
+                              ),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                setState(() {
+                  selectedValue = value!;
+                  controller.selectedValue.value = value;
+                  controller.getHistory();
+                });
+              },
+              icon: const Icon(Icons.keyboard_arrow_down_outlined,
+                  color: Colors.white),
+              dropdownColor: ColorName.gray343,
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+              alignment: Alignment.centerLeft,
+              isDense: true,
+              menuMaxHeight: 200,
+              borderRadius: BorderRadius.circular(15),
+            ),
           ),
         ),
       ),
@@ -440,10 +444,10 @@ class _CustomDropdownState extends State<CustomDropdown> {
   }
 }
 
-class CircleCapture extends StatelessWidget {
+class SmallCircleCapture extends StatelessWidget {
   Function()? onTapCapture;
 
-  CircleCapture({super.key, required this.onTapCapture});
+  SmallCircleCapture({super.key, required this.onTapCapture});
 
   @override
   Widget build(BuildContext context) {

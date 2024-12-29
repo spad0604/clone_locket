@@ -1,7 +1,7 @@
 import '../../../../base/base.dart';
 
 @JsonSerializable()
-@Json(caseStyle: CaseStyle.snake, ignoreNullMembers: true)
+@Json(caseStyle: CaseStyle.camel, ignoreNullMembers: true)
 class UserInformation {
   final String? account;
   final String? password;

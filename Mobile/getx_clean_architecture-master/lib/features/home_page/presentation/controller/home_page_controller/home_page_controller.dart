@@ -45,12 +45,12 @@ class HomePageController extends BaseController {
 
   @override
   void onInit() async {
-    EasyLoading.show(status: 'Loading...');
+    //EasyLoading.show(status: 'Loading...');
     await getUserAccount();
     await getHistory();
     await getListFriend();
     await getFriendInfor();
-    EasyLoading.dismiss();
+    //EasyLoading.dismiss();
     super.onInit();
   }
 
@@ -106,18 +106,14 @@ class HomePageController extends BaseController {
   }
 
   String avatarUrl(String account) {
-    if(account == 'Tất cả bạn bè') {
-      return 'https://flaticons.net/icon.php?slug_category=people&slug_icon=user-group';
-    }
     if (listFriendInfo.isNotEmpty) {
       for (FriendInformation friendInformation in listFriendInfo) {
         if (account == friendInformation.account) {
-          debugPrint('ola ${friendInformation.avatarUrl}');
-          return friendInformation.avatarUrl ?? '';
+          return friendInformation.avatarUrl ?? 'https://avatars.githubusercontent.com/u/179314473?v=4';
         }
       }
     }
-    return '';
+    return 'https://avatars.githubusercontent.com/u/179314473?v=4';
   }
 
 

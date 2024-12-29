@@ -12,6 +12,6 @@ key.properties
 **/*.keystore
 **/*.jks
 !debug.keystore
-!release.jks
+!keystore/release/release.jks
 
 fastlane/report.xml

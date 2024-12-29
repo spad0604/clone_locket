@@ -30,9 +30,15 @@ class CameraPageView extends BaseGetView<CameraPageController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         circleAvatar(
-                            url:
-                                rootPageController.user.value!.avatarUrl ?? '',
-                            isOnline: true),
+                            url: rootPageController.user.value != null
+                                ? (rootPageController.user.value!.avatarUrl !=
+                                        null
+                                    ? rootPageController.user.value!.avatarUrl!
+                                    : Assets.images.userIc.path)
+                                : Assets.images.userIc.path,
+                            isOnline: rootPageController.user.value != null
+                                ? true
+                                : false),
                         controller.isCapture.value == false
                             ? CustomDropdown()
                             : const Text(
@@ -118,7 +124,7 @@ class CameraPageView extends BaseGetView<CameraPageController> {
                                                 .withOpacity(0.75),
                                             contentPadding:
                                                 const EdgeInsets.symmetric(
-                                              vertical: 0,
+                                              vertical: 2,
                                               horizontal: 15,
                                             ),
                                             border: OutlineInputBorder(
@@ -301,3 +307,13 @@ class CircleCapture extends StatelessWidget {
     );
   }
 }
+
+class LinearRectTween extends RectTween {
+  LinearRectTween({Rect? begin, Rect? end}) : super(begin: begin, end: end);
+
+  @override
+  Rect? lerp(double t) {
+    return Rect.lerp(begin, end, t);
+  }
+}
+

@@ -18,7 +18,7 @@ class AppTextStyle {
     return TextStyle(
       fontWeight: weight,
       fontSize: size,
-      fontFamily: FontFamily.sFProDisplay,
+      fontFamily: FontFamily.plusJakartaSans,
       color: color,
       fontStyle: style,
       height: height,
