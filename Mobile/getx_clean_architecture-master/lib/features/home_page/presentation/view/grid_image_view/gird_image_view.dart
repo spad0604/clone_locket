@@ -46,16 +46,34 @@ class GridImageView extends BaseGetView<GridImageController> {
                       () => GridView.builder(
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3, // Số cột trong lưới
-                          crossAxisSpacing: 8, // Khoảng cách ngang giữa các mục
-                          mainAxisSpacing: 8, // Khoảng cách dọc giữa các mục
+                          crossAxisSpacing: 4, // Khoảng cách ngang giữa các mục
+                          mainAxisSpacing: 4, // Khoảng cách dọc giữa các mục
                           childAspectRatio: 1, // Tỷ lệ khung hình (hình vuông)
                         ),
                         itemBuilder: (context, index) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.network(
-                              homePageController.imageModel[index].imageUrl ?? '',
-                              fit: BoxFit.cover,
+                          return GestureDetector(
+                            onTap: () async{
+                              //homePageController.currentPage.value = index;
+                              homePageController.pageController.jumpToPage(index);
+                              Get.back();
+                            },
+                            child: Hero(
+                              flightShuttleBuilder: (flightContext, animation, flightDirection, fromHeroContext, toHeroContext) {
+                                return FadeTransition(
+                                  opacity: animation.drive(
+                                    Tween<double>(begin: 0.5, end: 1.0).chain(CurveTween(curve: Curves.easeInOut)),
+                                  ),
+                                  child: toHeroContext.widget,
+                                );
+                              },
+                              tag: homePageController.imageModel[index].imageUrl!,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.network(
+                                  homePageController.imageModel[index].imageUrl ?? '',
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
                           );
                         },

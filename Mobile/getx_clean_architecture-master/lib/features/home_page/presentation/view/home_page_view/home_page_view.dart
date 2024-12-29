@@ -19,27 +19,54 @@ class HomePageView extends BaseGetView<HomePageController> {
           children: [
             Positioned.fill(
               child: Obx(
-        () => PageView.builder(
+                () => PageView.builder(
+                  controller: controller.pageController,
                   scrollDirection: Axis.vertical,
                   itemCount: controller.imageModel.length,
+                  onPageChanged: (index) {
+                    controller.currentPage.value = index;
+                  },
                   itemBuilder: (context, index) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      controller.accountName.value =
+                          controller.imageModel[index].account ?? '';
+                    });
                     return controller.imageModel.isNotEmpty
-                        ? BuildImage(
-                            imageUrl: controller.imageModel[index].imageUrl ??
-                                'https://cdn-icons-png.flaticon.com/512/10278/10278187.png',
-                            userName: controller.imageModel[index].account ==
-                                    loginController
-                                        .emailTextEditingController.text
-                                ? 'Bạn'
-                                : (controller.imageModel[index].account ??
-                                    'User'),
-                            userAvatar: controller.imageModel[index].account ==
-                                    loginController
-                                        .emailTextEditingController.text
-                                ? null
-                                : controller.avatarUrl(
-                                    controller.imageModel[index].account ?? ''),
-                            message: controller.imageModel[index].message ?? '',
+                        ? Hero(
+                            flightShuttleBuilder: (flightContext,
+                                animation,
+                                flightDirection,
+                                fromHeroContext,
+                                toHeroContext) {
+                              return FadeTransition(
+                                opacity: animation.drive(
+                                  Tween<double>(begin: 0.5, end: 1.0).chain(
+                                      CurveTween(curve: Curves.easeInOut)),
+                                ),
+                                child: toHeroContext.widget,
+                              );
+                            },
+                            tag: controller.imageModel[index].imageUrl!,
+                            child: BuildImage(
+                              imageUrl: controller.imageModel[index].imageUrl ??
+                                  'https://cdn-icons-png.flaticon.com/512/10278/10278187.png',
+                              userName: controller.imageModel[index].account ==
+                                      loginController
+                                          .emailTextEditingController.text
+                                  ? 'Bạn'
+                                  : (controller.imageModel[index].account ??
+                                      'User'),
+                              userAvatar: controller
+                                          .imageModel[index].account ==
+                                      loginController
+                                          .emailTextEditingController.text
+                                  ? null
+                                  : controller.avatarUrl(
+                                      controller.imageModel[index].account ??
+                                          ''),
+                              message:
+                                  controller.imageModel[index].message ?? '',
+                            ),
                           )
                         : SizedBox(
                             height: Get.width,
@@ -75,28 +102,60 @@ class HomePageView extends BaseGetView<HomePageController> {
                   ),
                   Column(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(15),
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 15),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(24),
-                            color: ColorName.gray343,
-                          ),
-                          child: TextField(
-                            controller: TextEditingController(),
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              hintText: 'Gửi tin nhắn...',
-                              hintStyle: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                      Obx(
+                        () => controller.accountName.value !=
+                                loginController.emailTextEditingController.text
+                            ? Container(
+                                padding: const EdgeInsets.all(15),
+                                child: Container(
+                                  padding: const EdgeInsets.only(left: 15),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(24),
+                                    color: ColorName.gray343,
+                                  ),
+                                  child: TextField(
+                                    controller: TextEditingController(),
+                                    decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      hintText: 'Gửi tin nhắn...',
+                                      hintStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                margin: const EdgeInsets.only(bottom: 15),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: ColorName.gray343,
+                                ),
+                                padding: const EdgeInsets.all(15),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Assets.images.starIc.image(
+                                        color: Colors.white,
+                                        width: 20,
+                                        height: 20),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    const Text(
+                                      'Chưa có hoạt động nào',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(
@@ -173,29 +232,29 @@ class BuildImage extends StatelessWidget {
                       fit: BoxFit.cover,
                       width: Get.width,
                     ),
-                    message != '' ? Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 15.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: ColorName.gray343.withOpacity(0.75),
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                          child: Text(
-                            message ?? '',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        )
-
-                      ),
-                    ) : const SizedBox(),
+                    message != ''
+                        ? Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Padding(
+                                padding: const EdgeInsets.only(bottom: 15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: ColorName.gray343.withOpacity(0.75),
+                                    borderRadius: BorderRadius.circular(24),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 15),
+                                  child: Text(
+                                    message ?? '',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                )),
+                          )
+                        : const SizedBox(),
                   ],
                 )),
           )),

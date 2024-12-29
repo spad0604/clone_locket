@@ -37,6 +37,12 @@ class HomePageController extends BaseController {
 
   Rx<String> selectedValue = 'Tất cả bạn bè'.obs;
 
+  Rx<String> accountName = ''.obs;
+
+  RxInt currentPage = 0.obs;
+
+  PageController pageController = PageController();
+
   @override
   void onInit() async {
     EasyLoading.show(status: 'Loading...');
@@ -50,12 +56,13 @@ class HomePageController extends BaseController {
 
   Future<void> getUserAccount() async {
     account.value = loginController.emailTextEditingController.text;
+
   }
 
   Future<void> getHistory() async {
     try {
       imageModel.value = [];
-      if(selectedValue == 'Tất cả bạn bè') {
+      if(selectedValue.value == 'Tất cả bạn bè') {
         history.value = await getHistoryUseCase.build(null);
         if (history.isNotEmpty) {
           for (HistoryModel historyModel in history) {

@@ -14,7 +14,7 @@ class CameraPageView extends BaseGetView<CameraPageController> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: SizedBox(
-            height: Get.size.height -  MediaQuery.of(context).padding.vertical,
+            height: Get.size.height - MediaQuery.of(context).padding.vertical,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,8 +42,8 @@ class CameraPageView extends BaseGetView<CameraPageController> {
                         controller.isCapture.value == false
                             ? circleAvatar(
                                 url: Assets.images.chatIc.path, isOnline: false)
-                            : Assets.images.downloadsIc
-                                .image(width: 20, height: 20, color: Colors.white)
+                            : Assets.images.downloadsIc.image(
+                                width: 20, height: 20, color: Colors.white)
                       ],
                     ),
                   ),
@@ -93,7 +93,9 @@ class CameraPageView extends BaseGetView<CameraPageController> {
                                       alignment: Alignment.bottomCenter,
                                       child: Padding(
                                         padding: const EdgeInsets.only(
-                                            bottom: 15.0, left: 100, right: 100),
+                                            bottom: 15.0,
+                                            left: 100,
+                                            right: 100),
                                         child: TextField(
                                           controller: controller.message,
                                           style: const TextStyle(
@@ -229,27 +231,26 @@ class CameraPageView extends BaseGetView<CameraPageController> {
             child: Assets.images.closeIc
                 .image(color: Colors.white, height: 20, width: 20)),
         GestureDetector(
-          onTap: () async {
-            await send!.call();
-          },
-          child: Obx(
-            () => controller.isSending.value == false
-                ? ClipOval(
-                    child: Container(
-                      height: 100,
-                      width: 100,
-                      color: ColorName.gray343,
-                      child: Center(
-                        child: Assets.images.sendIc
-                            .image(color: Colors.white, height: 40, width: 40),
-                      ),
-                    ),
-                  )
-                : const CircularProgressIndicator(
-                    color: Colors.white,
+            onTap: () async {
+              await send!.call();
+            },
+            child: ClipOval(
+              child: Container(
+                height: 100,
+                width: 100,
+                color: ColorName.gray343,
+                child: Center(
+                  child: Obx(
+                    () => controller.isSending.value == false
+                        ? Assets.images.sendIc
+                            .image(color: Colors.white, height: 40, width: 40)
+                        : const CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
                   ),
-          ),
-        ),
+                ),
+              ),
+            )),
         GestureDetector(
           child: Assets.images.upperCaseIc
               .image(color: Colors.white, height: 20, width: 20),
