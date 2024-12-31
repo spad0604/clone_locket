@@ -80,7 +80,7 @@ class HomePageView extends BaseGetView<HomePageController> {
                       children: [
                         circleAvatar(
                           url: rootHomePageController.user.value!.avatarUrl ??
-                              '',
+                              'https://photos.fife.usercontent.google.com/pw/AP1GczNVXt1zLaet775B7hgovyRTfJ-N0dmeLDhILQwoatrRzbfWSRLFAo4H=w1096-h1462-s-no-gm?authuser=2',
                           isOnline: true,
                         ),
                         CustomDropdown(),
@@ -227,7 +227,7 @@ class BuildImage extends StatelessWidget {
                         ? Align(
                             alignment: Alignment.bottomCenter,
                             child: Padding(
-                                padding: const EdgeInsets.only(bottom: 15.0),
+                                padding: const EdgeInsets.only(bottom: 15.0, left: 15, right: 15),
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: ColorName.gray343.withOpacity(0.75),
@@ -236,6 +236,7 @@ class BuildImage extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 5, horizontal: 15),
                                   child: Text(
+                                    textAlign: TextAlign.center,
                                     message ?? '',
                                     style: const TextStyle(
                                       color: Colors.white,
