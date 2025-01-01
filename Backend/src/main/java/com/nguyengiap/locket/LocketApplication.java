@@ -13,6 +13,7 @@ import com.nguyengiap.locket.service.friend_table_service.FriendTableService;
 
 import jakarta.annotation.PostConstruct;
 
+//Happy new year - 2025
 @SpringBootApplication(scanBasePackages = "com.nguyengiap.locket")
 public class LocketApplication {
 	@Autowired
